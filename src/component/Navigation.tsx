@@ -9,7 +9,9 @@ function Navigation({ isOpen}) {
 
     const menuItems = [
         { id: 'home', label: 'Home', icon: 'fa-house', path: '' },
-        { id: 'customer', label: 'Customer', icon: 'fa-user', path: '/' },
+        { id: 'employee', label: 'Employee', icon: 'fa-user-group', path: '/employee' },
+        { id: 'supplier', label: 'Supplier', icon: 'fa-handshake', path: '/supplier' },
+        { id: 'category', label: 'Category', icon: 'fa-cubes', path: '/category' },
 
 
 
