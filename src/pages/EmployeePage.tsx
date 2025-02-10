@@ -1,6 +1,92 @@
 import {motion} from "framer-motion";
+import TableData from "../component/TableData.tsx";
+import {Employee} from "../model/Employee.ts";
+import {useDispatch, useSelector} from "react-redux";
+import AddEmployee from "../component/AddEmployee.tsx";
+import toast from "react-hot-toast";
+import ViewEmployee from "../component/ViewEmployee.tsx";
+import UpdateEmployee from "../component/UpdateEmployee.tsx";
+import DeleteModal from "../component/DeleteModal.tsx";
+import {useState} from "react";
+import {deleteEmployee, saveEmployee, updateEmployee} from "../slice/EmployeeSlice.ts";
+import {AppDispatch} from "../store/store.tsx";
+
+
+
 
 export function EmployeePage() {
+    const employeeMember : Employee[] = useSelector((state:  {employee:Employee[]} ) => state.employee);
+
+    const employeeHeaders = ['Name', 'Designation', 'Email', 'Contact No', 'Gender', 'Actions'];
+    const dispatch = useDispatch<AppDispatch>();  // A hook to access the dispatch function from the Redux store
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
+
+    const renderEmployeRow = (employee: Employee) => (
+        <>
+            <div className="p-2 truncate">{employee.firstName} {employee.lastName}</div>
+            <div className="p-2 truncate">{employee.designation}</div>
+            <div className="p-2 hidden sm:block truncate">{employee.email}</div>
+            <div className="p-2 truncate">{employee.contactNo}</div>
+            <div className="p-2 truncate">{employee.gender}</div>
+        </>
+    );
+
+    function handleAddEmployee(newEmployee: Employee) {
+        dispatch(saveEmployee(newEmployee));
+        setIsModalOpen(false);
+        toast.success('Employee saved successfully');
+    }
+
+    function handleViewEmploy(employee:Employee) {
+        setSelectedEmployee(employee);
+        setIsViewModalOpen(true);
+    }
+
+    function openUpdateModal(employee: Employee) {
+        setSelectedEmployee(employee);
+        setIsUpdateModalOpen(true);
+    }
+
+    function handleUpdateEmployee(employee: Employee) {
+        dispatch(updateEmployee(employee));
+        setIsUpdateModalOpen(false);
+        toast.success(
+            <div className="flex items-center space-x-2 ">
+                <i className="fa fa-refresh text-blue-500"></i>
+                <span>Employee updated successfully!</span>
+            </div>,
+            { icon: false }
+        );
+
+    }
+
+    function handleDeleteEmploy(employee:Employee){
+        toast.custom((t) => (
+            <DeleteModal
+                visible={t.visible}
+                onDelete={() => {
+                    toast.dismiss(t.id);
+                    dispatch(deleteEmployee(employee.employeeId));
+                    toast.success(
+                        <div className="flex items-center space-x-2 ">
+                            <i className="fa fa-trash text-red-600"></i>
+                            <span>Staff deleted successfully!</span>
+                        </div>,
+                        { icon: false }
+                    );
+                }}
+                onCancel={() => {
+                    toast.dismiss(t.id);
+                }}
+            />
+        ));
+    }
+
+
+
     return (
         <motion.div
             initial={{
@@ -25,16 +111,39 @@ export function EmployeePage() {
                 <div className="flex flex-wrap justify-end sm:justify-end space-x-0 sm:space-x-4 mb-5">
                     <button
                         id="btn-add"
-                        // onClick={() => setIsModalOpen(true)}
+                        onClick={() => setIsModalOpen(true)}
                         className="bg-green-600 text-white px-8 py-2 rounded-lg font-semibold hover:bg-green-700 transition text-sm sm:text-base flex items-center space-x-2 group sm:w-auto"
                     >
                         <i className="fa-solid fa-plus font-bold"></i>
                         <span className="pl-2">Add</span>
                     </button>
                 </div>
+                <AddEmployee isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} onSave={handleAddEmployee}/>
 
+                { selectedEmployee && (
+                    <ViewEmployee
+                        isOpenModal={isViewModalOpen}
+                        setIsOpenModal={setIsViewModalOpen}
+                        employee={selectedEmployee}
+                    />
+                )}
+
+                { selectedEmployee && (
+                    <UpdateEmployee
+                        isModalOpen={isUpdateModalOpen}
+                        setIsModalOpen={setIsUpdateModalOpen}
+                        employee={selectedEmployee}
+                        onUpdate={handleUpdateEmployee}
+                    />
+                )}
+
+                {/*table*/}
+                {/*<TableData data={employeeMember} headers={employeeHeaders} renderRow={renderEmployeRow}*/}
+                {/*           handleView={handleViewEmploy} handleUpdate={openUpdateModal} handleDelete={handleDeleteEmploy}*/}
+                {/*></TableData>*/}
 
             </div>
+
 
 
         </motion.div>

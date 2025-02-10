@@ -8,32 +8,38 @@ import {Home} from "./pages/Home.tsx";
 import {EmployeePage} from "./pages/EmployeePage.tsx";
 import {SupplierPage} from "./pages/SupplierPage.tsx";
 import {CategoryPage} from "./pages/CategoryPage.tsx";
+import {Provider} from "react-redux";
+import {store} from "./store/store.tsx";
+
 
 
 function App() {
-const routes = createBrowserRouter([
-    {
-        path: '',
-        element: <RootLayout />,
-        children: [
-            {path: '', element: <Home />},
-            {path: '/employee', element: <EmployeePage />},
-            {path: '/supplier', element: <SupplierPage />},
-            {path: '/category', element: <CategoryPage />},
-            {path: '*', element: <Error />}
+    const routes = createBrowserRouter([
+        {
+            path: '',
+            element: <RootLayout/>,
+            children: [
+                {path: '', element: <Home/>},
+                {path: '/employee', element: <EmployeePage/>},
+                {path: '/supplier', element: <SupplierPage/>},
+                {path: '/category', element: <CategoryPage/>},
+                {path: '*', element: <Error/>}
 
-        ]
-    }
-])
+            ]
+        }
+    ]);
 
-  return (
-    <>
-        <Toaster position={"top-center"}></Toaster>
-        <RouterProvider router={routes} />
+    return (
+        <>
+        <Provider store={store}>
+                <Toaster position={"top-center"}/>
+                <RouterProvider router={routes}/>
+        </Provider>
+            </>
+    );
 
 
-    </>
-  )
 }
 
 export default App
+
