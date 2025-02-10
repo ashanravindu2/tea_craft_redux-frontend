@@ -15,12 +15,12 @@ const  api = axios.create({
 
 export const saveEmployee = createAsyncThunk(
     'employee/saveEmployee',
-    async (employee:Employee,{rejectWithValue})=>{
+    async (employee:Employee)=>{
         try {
             const response = await api.post('/add',employee);
             return response.data;
-        }catch (error: any){
-            return rejectWithValue(error.response?.data || "Error saving employee");
+        }catch (error){
+            return console.log('error',error)
         }
     }
 );
