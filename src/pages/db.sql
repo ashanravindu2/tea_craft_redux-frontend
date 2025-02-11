@@ -21,7 +21,7 @@ CREATE TABLE RawMaterialStock (
 );
 
 
--- Production Table
+-- ProductionPage Table
 CREATE TABLE Production (
                             ProductionID INT PRIMARY KEY AUTO_INCREMENT,
                             StockID INT,

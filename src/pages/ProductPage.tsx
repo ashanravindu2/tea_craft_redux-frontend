@@ -1,6 +1,6 @@
 import {motion} from "framer-motion";
 
-export function CustomerPage() {
+export function ProductPage() {
     return (
         <motion.div
             initial={{
@@ -19,7 +19,7 @@ export function CustomerPage() {
         >
             <div className="container mx-auto p-5">
                 <h1 className="text-xl sm:text-2xl font-semibold mb-8 text-center sm:text-left">
-                    Customer Management
+                    Product Management
                 </h1>
 
                 <div className="flex flex-wrap justify-end sm:justify-end space-x-0 sm:space-x-4 mb-5">

@@ -11,9 +11,9 @@ function Navigation({ isOpen}) {
         { id: 'home', label: 'Home', icon: 'fa-house', path: '' },
         { id: 'employee', label: 'Employee', icon: 'fa-user-group', path: '/employee' },
         { id: 'supplier', label: 'Supplier', icon: 'fa-handshake', path: '/supplier' },
-        { id: 'category', label: 'Category', icon: 'fa-cubes', path: '/category' },
-
-
+        { id: 'rowMaterial', label: 'Raw Material', icon: 'fas fa-leaf', path: '/rowMaterial' },
+        { id: 'production', label: 'Production', icon: 'fa-box', path: '/production' },
+        { id: 'product', label: 'Product', icon: 'fas fa-store', path: '/product' },
 
 
 
@@ -34,7 +34,7 @@ function Navigation({ isOpen}) {
             )}
             {/* Sidebar */}
             <aside
-                className={`bg-white shadow-md fixed z-40 h-full transition-transform transform ${
+                className={`bg-green-100 shadow-md fixed z-40 h-full transition-transform transform ${
                     isMenuOpen || isOpen ? 'translate-x-0' : '-translate-x-full'
                 } md:translate-x-0 w-80`}
             >

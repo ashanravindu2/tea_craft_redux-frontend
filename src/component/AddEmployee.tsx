@@ -7,7 +7,7 @@ import {Employee} from "../model/Employee.ts";
 interface AddEmployeeProps {
     isModalOpen: boolean;
     setIsModalOpen: (open: boolean) => void;
-    onSave: (newEmployee: Employee) => void;
+    onSave: (e:Employee) => void;
 }
 
 function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmployeeProps>){
@@ -36,21 +36,21 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
     }
 
     const handleSave = () => {
-        if (!formData.firstName || !formData.lastName || !formData.designation || !formData.email){
-            alert("All fields are required!");
-            return;
-        }
+        // if (!formData.firstName || !formData.lastName || !formData.designation || !formData.email){
+        //     alert("All fields are required!");
+        //     return;
+        // }
 
 
-        const newEmployee = new Employee(
+        const newEmployees = new Employee(
 
             "EMo",
             formData.firstName,
             formData.lastName,
             formData.designation,
             formData.gender,
-            "2003-12-01T00:00:00.000Z",
-            "2003-12-01T00:00:00.000Z",
+            "2003-12-01T0:00:00.000Z",
+            "2003-12-01T0:00:00.000Z",
             formData.streetAddress,
             formData.addressLine2,
             formData.country,
@@ -61,7 +61,9 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
             formData.email
 
         );
-        onSave(newEmployee);
+
+        console.log("Add",newEmployees);
+        onSave(newEmployees);
         setIsModalOpen(false);
 
     }

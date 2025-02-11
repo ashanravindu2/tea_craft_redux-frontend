@@ -16,6 +16,7 @@ const  api = axios.create({
 export const saveEmployee = createAsyncThunk(
     'employee/saveEmployee',
     async (employee:Employee)=>{
+        console.log("Slice",employee);
         try {
             const response = await api.post('/add',employee);
             return response.data;
@@ -29,7 +30,7 @@ export const updateEmployee = createAsyncThunk(
     'employee/updateEmployee',
     async (employee:Employee)=>{
         try {
-            const response = await api.put(`/update/${employee.employeeId}`,employee);
+            const response = await api.put(`/update/${employee.employeeID}`,employee);
             return response.data;
         }catch (error){
             return console.log('error',error)
@@ -83,7 +84,7 @@ const employeeSlice =  createSlice({
             });
         builder
             .addCase(updateEmployee.fulfilled, (state, action) => {
-                const index = state.findIndex((employee:Employee)=>employee.employeeId === action.payload.employeeId);
+                const index = state.findIndex((employee:Employee)=>employee.employeeID === action.payload.employeeId);
                 state[index] = action.payload;
                 alert("Employee Updated Successfully");
             })
@@ -95,7 +96,7 @@ const employeeSlice =  createSlice({
             });
         builder
             .addCase(deleteEmployee.fulfilled, (state, action) => {
-                const index = state.findIndex((employee:Employee)=>employee.employeeId === action.payload);
+                const index = state.findIndex((employee:Employee)=>employee.employeeID === action.payload);
                 state.slice(index,1);
                 alert("Employee Deleted Successfully")
             })

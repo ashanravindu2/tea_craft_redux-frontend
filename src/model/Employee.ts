@@ -1,7 +1,7 @@
 // import { v4 as uuidv4 } from 'uuid';
 
 export class Employee {
-    employeeId: string ;
+    employeeID: string ;
     firstName: string;
     lastName: string;
     designation: string;
@@ -19,7 +19,7 @@ export class Employee {
 
 
     constructor(
-        employeeId  : string,
+        employeeID  : string,
         firstName: string,
         lastName: string,
         designation: string,
@@ -36,7 +36,7 @@ export class Employee {
         email: string,
 
     ) {
-        this.employeeId = employeeId;
+        this.employeeID = employeeID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.designation = designation;

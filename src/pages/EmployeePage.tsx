@@ -3,13 +3,14 @@ import TableData from "../component/TableData.tsx";
 import {Employee} from "../model/Employee.ts";
 import {useDispatch, useSelector} from "react-redux";
 import AddEmployee from "../component/AddEmployee.tsx";
-import toast from "react-hot-toast";
+
 import ViewEmployee from "../component/ViewEmployee.tsx";
 import UpdateEmployee from "../component/UpdateEmployee.tsx";
 import DeleteModal from "../component/DeleteModal.tsx";
 import {useState} from "react";
 import {deleteEmployee, saveEmployee, updateEmployee} from "../slice/EmployeeSlice.ts";
 import {AppDispatch} from "../store/store.tsx";
+import toast from "react-hot-toast";
 
 
 
@@ -24,17 +25,32 @@ export function EmployeePage() {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
 
-    const renderEmployeRow = (employee: Employee) => (
-        <>
-            <div className="p-2 truncate">{employee.firstName} {employee.lastName}</div>
-            <div className="p-2 truncate">{employee.designation}</div>
-            <div className="p-2 hidden sm:block truncate">{employee.email}</div>
-            <div className="p-2 truncate">{employee.contactNo}</div>
-            <div className="p-2 truncate">{employee.gender}</div>
-        </>
-    );
+    const renderEmployeRow = (employee?: Employee) => {
+        if (!employee) return <div className={"p-2"}>Invalid Employee Data</div>;
+        return (
+            <>
+                <div className="p-2 truncate">{employee.firstName} ,{employee.lastName}</div>
+                <div className="p-2 truncate">{employee.designation}</div>
+                <div className="p-2 hidden sm:block truncate">{employee.email}</div>
+                <div className="p-2 truncate">{employee.contactNo}</div>
+                <div className="p-2 truncate">{employee.gender}</div>
+            </>
+        );
+    };
+
+    // const renderEmployeRow = (employee: Employee) => (
+    //
+    //     <>
+    //         <div className="p-2 truncate">{employee.firstName} ,{employee.lastName}</div>
+    //         <div className="p-2 truncate">{employee.designation}</div>
+    //         <div className="p-2 hidden sm:block truncate">{employee.email}</div>
+    //         <div className="p-2 truncate">{employee.contactNo}</div>
+    //         <div className="p-2 truncate">{employee.gender}</div>
+    //     </>
+    // );
 
     function handleAddEmployee(newEmployee: Employee) {
+        console.log("Empage",newEmployee);
         dispatch(saveEmployee(newEmployee));
         setIsModalOpen(false);
         toast.success('Employee saved successfully');
@@ -138,9 +154,9 @@ export function EmployeePage() {
                 )}
 
                 {/*table*/}
-                {/*<TableData data={employeeMember} headers={employeeHeaders} renderRow={renderEmployeRow}*/}
-                {/*           handleView={handleViewEmploy} handleUpdate={openUpdateModal} handleDelete={handleDeleteEmploy}*/}
-                {/*></TableData>*/}
+                <TableData data={employeeMember} headers={employeeHeaders} renderRow={renderEmployeRow}
+                           handleView={handleViewEmploy} handleUpdate={openUpdateModal} handleDelete={handleDeleteEmploy}
+                ></TableData>
 
             </div>
 

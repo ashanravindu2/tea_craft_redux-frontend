@@ -7,9 +7,11 @@ import {Error} from "./component/Error.tsx";
 import {Home} from "./pages/Home.tsx";
 import {EmployeePage} from "./pages/EmployeePage.tsx";
 import {SupplierPage} from "./pages/SupplierPage.tsx";
-import {CategoryPage} from "./pages/CategoryPage.tsx";
+import {RowMaterialPage} from "./pages/RowMaterialPage.tsx";
 import {Provider} from "react-redux";
 import {store} from "./store/store.tsx";
+import {ProductionPage} from "./pages/ProductionPage.tsx";
+import {ProductPage} from "./pages/ProductPage.tsx";
 
 
 
@@ -22,7 +24,10 @@ function App() {
                 {path: '', element: <Home/>},
                 {path: '/employee', element: <EmployeePage/>},
                 {path: '/supplier', element: <SupplierPage/>},
-                {path: '/category', element: <CategoryPage/>},
+                {path: '/rowMaterial', element: <RowMaterialPage/>},
+                {path: '/production', element: <ProductionPage/>},
+                {path: '/product', element: <ProductPage/>},
+
                 {path: '*', element: <Error/>}
 
             ]
@@ -31,8 +36,9 @@ function App() {
 
     return (
         <>
+            <Toaster position={"top-center"}/>
         <Provider store={store}>
-                <Toaster position={"top-center"}/>
+
                 <RouterProvider router={routes}/>
         </Provider>
             </>

@@ -1,7 +1,7 @@
 import {v4 as uuidv4} from "uuid";
 
 export class Supplier{
-    supplierId: string = `ST-${uuidv4()}`;
+    supplierID: string = `ST-${uuidv4()}`;
     firstName: string;
     lastName: string;
     gender: string;
@@ -17,6 +17,7 @@ export class Supplier{
     email: string;
 
     constructor(
+        supplierID: string,
         firstName: string,
         lastName: string,
         gender: string,
@@ -32,6 +33,7 @@ export class Supplier{
         email: string,
 
     ) {
+        this.supplierID = supplierID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
