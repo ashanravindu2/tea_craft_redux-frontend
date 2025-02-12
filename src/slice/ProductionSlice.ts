@@ -5,7 +5,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 const initialState : Production[] = [];
 
 const  api = axios.create({
-    baseURL: "http://localhost:5173/production"
+    baseURL: "http://localhost:3000/production"
 });
 
 export const saveProduction = createAsyncThunk(

@@ -5,7 +5,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 const initialState:RawMaterial[]=[];
 
 const  api = axios.create({
-    baseURL: "http://localhost:5173/rawMaterial"
+    baseURL: "http://localhost:3000/rawMaterial"
 });
 
 export const saveRawMaterial = createAsyncThunk(

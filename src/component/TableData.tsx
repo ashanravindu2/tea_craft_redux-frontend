@@ -1,4 +1,10 @@
 import * as React from "react";
+import {useEffect} from "react";
+import {getAllSuppliers} from "../slice/SupplierSlice.ts";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../store/store.tsx";
+
+
 
 interface DataTableProps {
     data: any[];
@@ -9,6 +15,8 @@ interface DataTableProps {
     handleUpdate?: (item: any) => void;
     handleDelete?: (item: any) => void;
 }
+
+
 
 function DataTable({ headers, data,actions= true, renderRow, handleView, handleUpdate, handleDelete }: Readonly<DataTableProps>) {
     return (

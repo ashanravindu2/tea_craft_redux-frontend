@@ -7,8 +7,8 @@ import AddEmployee from "../component/AddEmployee.tsx";
 import ViewEmployee from "../component/ViewEmployee.tsx";
 import UpdateEmployee from "../component/UpdateEmployee.tsx";
 import DeleteModal from "../component/DeleteModal.tsx";
-import {useState} from "react";
-import {deleteEmployee, saveEmployee, updateEmployee} from "../slice/EmployeeSlice.ts";
+import {useEffect, useState} from "react";
+import {deleteEmployee, getAllEmployees, saveEmployee, updateEmployee} from "../slice/EmployeeSlice.ts";
 import {AppDispatch} from "../store/store.tsx";
 import toast from "react-hot-toast";
 
@@ -20,11 +20,12 @@ export function EmployeePage() {
 
     const employeeHeaders = ['Name', 'Designation', 'Email', 'Contact No', 'Gender', 'Actions'];
     const dispatch = useDispatch<AppDispatch>();  // A hook to access the dispatch function from the Redux store
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-
 
     const renderEmployeRow = (employee?: Employee) => {
         if (!employee) return <div className={"p-2"}>Invalid Employee Data</div>;
@@ -70,6 +71,7 @@ export function EmployeePage() {
     }
 
     function handleDeleteEmploy(employee:Employee){
+
         toast.custom((t) => (
             <DeleteModal
                 visible={t.visible}
@@ -88,10 +90,9 @@ export function EmployeePage() {
                     toast.dismiss(t.id);
                 }}
             />
+
         ));
     }
-
-
 
     return (
         <motion.div
@@ -126,7 +127,7 @@ export function EmployeePage() {
                 </div>
                 <AddEmployee isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} onSave={handleAddEmployee}/>
 
-                { selectedEmployee && (
+                {selectedEmployee && (
                     <ViewEmployee
                         isOpenModal={isViewModalOpen}
                         setIsOpenModal={setIsViewModalOpen}
@@ -134,7 +135,7 @@ export function EmployeePage() {
                     />
                 )}
 
-                { selectedEmployee && (
+                {selectedEmployee && (
                     <UpdateEmployee
                         isModalOpen={isUpdateModalOpen}
                         setIsModalOpen={setIsUpdateModalOpen}
