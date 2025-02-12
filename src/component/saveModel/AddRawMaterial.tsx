@@ -33,7 +33,7 @@ function AddRawMaterial({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddRaw
     const [formData, setFormData] = useState({
         stockID: "",
         supplierID: "",
-        quantityInKg: 0,
+        quantityInKg: "",
         dateReceived: ""
     });
 
@@ -50,7 +50,7 @@ function AddRawMaterial({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddRaw
         const newRawMaterial = new RawMaterial(
             "RM" + Math.floor(Math.random() * 1000),
             formData.supplierID,
-            formData.quantityInKg,
+            Number(formData.quantityInKg),
             formData.dateReceived
         );
 
@@ -102,58 +102,74 @@ function AddRawMaterial({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddRaw
                     <h1 className="text-center text-xl font-semibold mb-5">Add Raw Material</h1>
 
                     <div className="overflow-y-auto h-[60vh] custom-scrollbar p-2">
-                        <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-10">
-                            <div className="sm:col-span-3">
-                                <div className="mt-2">
-                                    <select
-                                        name="supplierID"
-                                        id="supplierID"
-                                        value={formData.supplierID}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                    >
-                                        <option value="" disabled>Select Supplier</option>
-                                        {supplierMember.map((supplier) => (
-                                            <option value={supplier.supplierID}>{supplier.supplierID}</option>
-                                        ))}
 
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="sm:col-span-3">
-                                <label htmlFor="dob" className="block text-sm font-medium text-gray-900">Received
-                                    Date</label>
-                                <div className="mt-2">
-                                    <input
-                                        type="date"
-                                        name="dob"
-                                        id="dob"
-                                        value={formData.dateReceived}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                    />
-                                </div>
+                        <div className="sm:col-span-3 py-5">
+                            <label htmlFor="supplierID" className="block text-sm font-medium text-gray-900">Supplier
+                                ID</label>
+                            <div className="mt-2">
+                                <select
+                                    name="supplierID"
+                                    id="supplierID"
+                                    value={formData.supplierID}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                >
+                                    <option value="" disabled>Select Supplier</option>
+                                    {supplierMember.map((supplier) => (
+                                        <option value={supplier.supplierID}>{supplier.supplierID}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
 
-                        {/* Postal Code and Joined Date */}
-                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                            <div className="sm:col-span-3">
-                                <label htmlFor="postal-code" className="block text-sm font-medium text-gray-900">Quantity /KG</label>
-                                <div className="mt-2">
-                                    <input
-                                        type="number"
-                                        name="postalCode"
-                                        id="postal-code"
-                                        value={formData.quantityInKg}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                    />
-                                </div>
+                        <div className="sm:col-span-3 py-5">
+                            <label htmlFor="supplierName" className="block text-sm font-medium text-gray-900">Supplier
+                                Name</label>
+                            <div className="mt-2">
+                                <input
+                                    type="text"
+                                    name="supplierName"
+                                    id="supplierName"
+                                    disabled={true}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3 py-5">
+                            <label htmlFor="quantityInKg" className="block text-sm font-medium text-gray-900">Quantity
+                                /KG</label>
+                            <div className="mt-2">
+                                <input
+                                    type="number"
+                                    name="quantityInKg"
+                                    id="quantityInKg"
+                                    value={formData.quantityInKg}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                />
+                            </div>
+                        </div>
+
+
+                        <div className="sm:col-span-3 py-5">
+                            <label htmlFor="dateReceived" className="block text-sm font-medium text-gray-900">Date of
+                                Received</label>
+                            <div className="mt-2">
+                                <input
+                                    type="date"
+                                    name="dateReceived"
+                                    id="dateReceived"
+                                    value={formData.dateReceived}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                />
                             </div>
                         </div>
                     </div>

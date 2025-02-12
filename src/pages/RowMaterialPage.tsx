@@ -2,16 +2,18 @@ import {motion} from "framer-motion";
 
 import TableData from "../component/TableData.tsx";
 import AddRawMaterial from "../component/saveModel/AddRawMaterial.tsx";
-import {ViewRawMaterial} from "../component/viewModel/ViewRawMaterial.tsx";
-import {UpdateRawMaterial} from "../component/updateModel/UpdateRawMaterial.tsx";
 
-import {useState} from "react";
+
+import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {deleteRawMaterial, saveRawMaterial, updateRawMaterial} from "../slice/RawMaterialSlice.ts";
 import DeleteModal from "../component/DeleteModal.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RawMaterial} from "../model/RawMaterial.ts";
 import {AppDispatch} from "../store/store.tsx";
+import {formatDate} from "../util/util.ts";
+import ViewRawMaterial from "../component/viewModel/ViewRawMaterial.tsx";
+import UpdateRawMaterial from "../component/updateModel/UpdateRawMaterial.tsx";
 
 
 
@@ -28,14 +30,16 @@ export function RowMaterialPage() {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedRawMaterial, setSelectedRawMaterial] = useState<RawMaterial | null>(null);
 
+
     const renderRawMaterialRow = (rawMaterial?: RawMaterial) => {
         if (!rawMaterial) return <div className={"p-2"}>Invalid Raw Material Data</div>;
         return (
             <>
                 <div className="p-2 truncate">{rawMaterial.stockID}</div>
                 <div className="p-2 truncate">{rawMaterial.supplierID}</div>
+                <div className="p-2 truncate">{rawMaterial.supplierName}</div>
                 <div className="p-2 truncate">{rawMaterial.quantityInKg}</div>
-                <div className="p-2 truncate">{rawMaterial.dateReceived}</div>
+                <div className="p-2 truncate">{formatDate(rawMaterial.dateReceived)}</div>
             </>
         );
     };
@@ -144,10 +148,10 @@ export function RowMaterialPage() {
                     />
                 )}
 
-                {/*/!*table*!/*/}
-                {/*<TableData data={rawMaterials} headers={rawMaterialHeaders} renderRow={renderRawMaterialRow}*/}
-                {/*           handleView={handleViewRawMaterial} handleUpdate={openUpdateModal} handleDelete={handleDeleteRawMaterial}*/}
-                {/*></TableData>*/}
+                {/*table*/}
+                <TableData data={rawMaterials} headers={rawMaterialHeaders} renderRow={renderRawMaterialRow}
+                           handleView={handleViewRawMaterial} handleUpdate={openUpdateModal} handleDelete={handleDeleteRawMaterial}
+                ></TableData>
             </div>
 
 
