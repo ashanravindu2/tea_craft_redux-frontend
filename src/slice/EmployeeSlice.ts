@@ -9,7 +9,7 @@ import  axios from "axios";
 const initialState: Employee[]=[];
 
 const  api = axios.create({
-    baseURL: "http://localhost:5173/employee"
+    baseURL: "http://localhost:3000/employee"
 });
 
 

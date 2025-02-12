@@ -12,16 +12,21 @@ import {Provider} from "react-redux";
 import {store} from "./store/store.tsx";
 import {ProductionPage} from "./pages/ProductionPage.tsx";
 import {ProductPage} from "./pages/ProductPage.tsx";
+// import SignIn from "./pages/SignIn.tsx";
 
 
 
 function App() {
     const routes = createBrowserRouter([
+        // {
+        //     path: '/signIn',
+        //     element: <SignIn/>, // Set SignIn as the default page
+        // },
         {
             path: '',
             element: <RootLayout/>,
             children: [
-                {path: '', element: <Home/>},
+                {path: '/home', element: <Home/>},
                 {path: '/employee', element: <EmployeePage/>},
                 {path: '/supplier', element: <SupplierPage/>},
                 {path: '/rowMaterial', element: <RowMaterialPage/>},

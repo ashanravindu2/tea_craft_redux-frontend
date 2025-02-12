@@ -8,7 +8,7 @@ function Navigation({ isOpen}) {
     const [isMenuOpen, setMenuOpen] = useState(false);
 
     const menuItems = [
-        { id: 'home', label: 'Home', icon: 'fa-house', path: '' },
+        { id: 'home', label: 'Home', icon: 'fa-house', path: '/home' },
         { id: 'employee', label: 'Employee', icon: 'fa-user-group', path: '/employee' },
         { id: 'supplier', label: 'Supplier', icon: 'fa-handshake', path: '/supplier' },
         { id: 'rowMaterial', label: 'Raw Material', icon: 'fas fa-leaf', path: '/rowMaterial' },

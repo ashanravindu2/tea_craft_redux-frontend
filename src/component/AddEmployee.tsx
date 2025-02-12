@@ -43,14 +43,13 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
 
 
         const newEmployees = new Employee(
-
-            "EMo",
+            "EMP" + Math.floor(Math.random() * 1000),
             formData.firstName,
             formData.lastName,
             formData.designation,
             formData.gender,
-            "2003-12-01T0:00:00.000Z",
-            "2003-12-01T0:00:00.000Z",
+            formData.joinedDate,
+            formData.dob,
             formData.streetAddress,
             formData.addressLine2,
             formData.country,

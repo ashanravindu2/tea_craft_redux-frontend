@@ -4,9 +4,17 @@ import Navigation from "./Navigation.tsx";
 
 import {Header} from "./Header.tsx";
 
+
 export function RootLayout() {
     const userFullName = "John Doe";
     const userRole = "Role";
+    // const navigate = useNavigate();
+    //
+    // useEffect(() => {
+    //     navigate('/signIn')
+    // }, [navigate]);
+    //
+
 
     return (
         <div className="flex h-screen">
