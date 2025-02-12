@@ -5,18 +5,20 @@ import {useDispatch, useSelector} from "react-redux";
 import toast from "react-hot-toast";
 
 import {Supplier} from "../model/Supplier.ts";
-import {addSupplierMember, removeSupplierMember, updateSupplierMember} from "../slice/SupplierSlice.ts";
 import DeleteModal from "../component/DeleteModal.tsx";
 import AddSupplier from "../component/AddSupllier.tsx";
 import ViewSupplier from "../component/ViewSupplier.tsx";
 import UpdateSupplier from "../component/UpdateSupplier.tsx";
-import {RootState} from "../store/store.tsx";
 import {useState} from "react";
+import {deleteSupplier, saveSupplier, updateSupplier} from "../slice/SupplierSlice.ts";
+import {AppDispatch} from "../store/store.tsx";
+
 
 export function SupplierPage() {
-    const supplierMember: Supplier[] = useSelector((state: RootState) => state.supplier);
+    const supplierMember : Supplier[] = useSelector((state:  {supplier:Supplier[]} ) => state.supplier);
+
     const supplierHeaders = ['Name','Email', 'Address', 'Contact No', 'Gender', 'Actions'];
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -32,13 +34,13 @@ export function SupplierPage() {
         </>
     );
 
-    function handleAddEmployee(newSupplier: Supplier) {
-        dispatch( addSupplierMember(newSupplier));
+    function handleAddSupplier(newSupplier: Supplier) {
+        dispatch( saveSupplier(newSupplier));
         setIsModalOpen(false);
         toast.success('Supplier saved successfully');
     }
 
-    function handleViewEmploy(supplier:Supplier) {
+    function handleViewSupllier(supplier:Supplier) {
         setSelectedSupplier(supplier);
         setIsViewModalOpen(true);
     }
@@ -48,8 +50,8 @@ export function SupplierPage() {
         setIsUpdateModalOpen(true);
     }
 
-    function handleUpdateEmployee(supplier: Supplier) {
-        dispatch(updateSupplierMember(supplier));
+    function handleUpdateSupplier(supplier: Supplier) {
+        dispatch(updateSupplier(supplier));
         setIsUpdateModalOpen(false);
         toast.success(
             <div className="flex items-center space-x-2 ">
@@ -61,13 +63,13 @@ export function SupplierPage() {
 
     }
 
-    function handleDeleteEmploy(supplier:Supplier){
+    function handleDeleteSupplier(supplier:Supplier){
         toast.custom((t) => (
             <DeleteModal
                 visible={t.visible}
                 onDelete={() => {
                     toast.dismiss(t.id);
-                    dispatch(removeSupplierMember(supplier.supplierId));
+                    dispatch(deleteSupplier(supplier.supplierID));
                     toast.success(
                         <div className="flex items-center space-x-2 ">
                             <i className="fa fa-trash text-red-600"></i>
@@ -116,7 +118,7 @@ export function SupplierPage() {
                         <span className="pl-2">Add</span>
                     </button>
                 </div>
-                <AddSupplier isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} onSave={handleAddEmployee}/>
+                <AddSupplier isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} onSave={handleAddSupplier}/>
 
                 { selectedSupplier && (
                     <ViewSupplier
@@ -131,13 +133,13 @@ export function SupplierPage() {
                         isModalOpen={isUpdateModalOpen}
                         setIsModalOpen={setIsUpdateModalOpen}
                         supplier={selectedSupplier}
-                        onUpdate={handleUpdateEmployee}
+                        onUpdate={handleUpdateSupplier}
                     />
                 )}
 
                 {/*table*/}
                 <TableData data={supplierMember} headers={supplierHeaders} renderRow={renderSupplierRow}
-                           handleView={handleViewEmploy} handleUpdate={openUpdateModal} handleDelete={handleDeleteEmploy}
+                           handleView={handleViewSupllier} handleUpdate={openUpdateModal} handleDelete={handleDeleteSupplier}
                 ></TableData>
 
             </div>

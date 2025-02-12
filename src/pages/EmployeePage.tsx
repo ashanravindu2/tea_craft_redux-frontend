@@ -9,8 +9,9 @@ import UpdateEmployee from "../component/UpdateEmployee.tsx";
 import DeleteModal from "../component/DeleteModal.tsx";
 import {useState} from "react";
 import {deleteEmployee, saveEmployee, updateEmployee} from "../slice/EmployeeSlice.ts";
-import {AppDispatch} from "../store/store.tsx";
+
 import toast from "react-hot-toast";
+import {AppDispatch} from "../store/store.tsx";
 
 
 
@@ -85,7 +86,7 @@ export function EmployeePage() {
                 visible={t.visible}
                 onDelete={() => {
                     toast.dismiss(t.id);
-                    dispatch(deleteEmployee(employee.employeeId));
+                    dispatch(deleteEmployee(employee.employeeID));
                     toast.success(
                         <div className="flex items-center space-x-2 ">
                             <i className="fa fa-trash text-red-600"></i>
@@ -153,10 +154,10 @@ export function EmployeePage() {
                     />
                 )}
 
-                {/*table*/}
-                <TableData data={employeeMember} headers={employeeHeaders} renderRow={renderEmployeRow}
-                           handleView={handleViewEmploy} handleUpdate={openUpdateModal} handleDelete={handleDeleteEmploy}
-                ></TableData>
+                {/*/!*table*!/*/}
+                {/*<TableData data={employeeMember} headers={employeeHeaders} renderRow={renderEmployeRow}*/}
+                {/*           handleView={handleViewEmploy} handleUpdate={openUpdateModal} handleDelete={handleDeleteEmploy}*/}
+                {/*></TableData>*/}
 
             </div>
 

@@ -62,16 +62,16 @@ const rawMaterialSlice = createSlice({
     name: 'rawMaterial',
     initialState,
     reducers: {},
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder
             .addCase(saveRawMaterial.fulfilled, (state, action) => {
                 state.push(action.payload);
                 alert("Raw Material Added Successfully");
             })
-            .addCase(updateRawMaterial.rejected, (state, action) => {
+            .addCase(saveRawMaterial.rejected, (state, action) => {
                 alert("Raw Material Update Failed");
             })
-            .addCase(deleteRawMaterial.pending, (state, action) => {
+            .addCase(saveRawMaterial.pending, (state, action) => {
                 alert("Raw Material Delete Failed");
             });
         builder

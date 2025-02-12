@@ -35,6 +35,7 @@ function AddSupplier({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddSuppli
 
     function handleSave() {
         const newSupllier = new Supplier(
+            "S1212",
             formData.firstName,
             formData.lastName,
             formData.gender,

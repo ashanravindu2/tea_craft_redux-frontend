@@ -3,13 +3,14 @@ import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 
+
 const  initialState: Supplier[]=[];
 
 const api = axios.create({
     baseURL: "http://localhost:5173/supplier"
 });
 
-export const saveSupplier = createAsyncThunk(
+export const saveSupplier = createAsyncThunk (
     'supplier/saveSupplier',
     async (supplier:Supplier)=>{
         console.log("Slice",supplier);
