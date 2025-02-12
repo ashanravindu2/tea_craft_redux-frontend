@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
-import {formatDate} from "../util/util.ts";
-import {Supplier} from "../model/Supplier.ts";
+import {formatDate} from "../../util/util.ts";
+import {Supplier} from "../../model/Supplier.ts";
 
 
 interface ViewSupllierProps {

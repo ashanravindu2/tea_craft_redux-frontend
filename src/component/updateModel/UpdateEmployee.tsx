@@ -1,49 +1,51 @@
 import {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 
-import {formatDate} from "../util/util.ts";
+import {formatDate} from "../../util/util.ts";
+import {Employee} from "../../model/Employee.ts";
 import * as React from "react";
-import {Supplier} from "../model/Supplier.ts";
 
 interface UpdateModalProps{
     isModalOpen: boolean;
     setIsModalOpen: (open: boolean) => void;
-    onUpdate: (updatedSupllier: Supplier) => void;
-    supplier:Supplier;
+    onUpdate: (updatedEmployee: Employee) => void;
+    employee:Employee;
 }
 
-function UpdateSupplier({ isModalOpen, setIsModalOpen, onUpdate, supplier}: Readonly<UpdateModalProps>)  {
+function UpdateEmployee({ isModalOpen, setIsModalOpen, onUpdate, employee}: Readonly<UpdateModalProps>)  {
     const [formData, setFormData] = useState({
-        firstName: supplier.firstName,
-        lastName: supplier.lastName,
-        joinedDate: formatDate(supplier.joinedDate),
-        gender: supplier.gender,
-        dob: formatDate(supplier.dob),
-        contactNumber: supplier.contactNo,
-        email: supplier.email,
-        streetAddress: supplier.addressLine01,
-        addressLine2: supplier.addressLine02,
-        country: supplier.addressLine03,
-        province: supplier.addressLine04,
-        city: supplier.addressLine05,
-        postalCode: supplier.postalCode,
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        designation: employee.designation,
+        joinedDate: formatDate(employee.joinedDate),
+        gender: employee.gender,
+        dob: formatDate(employee.dob),
+        contactNumber: employee.contactNo,
+        email: employee.email,
+        streetAddress: employee.addressLine01,
+        addressLine2: employee.addressLine02,
+        country: employee.addressLine03,
+        province: employee.addressLine04,
+        city: employee.addressLine05,
+        postalCode: employee.postalCode,
     });
 
     useEffect(() => {
         setFormData({
-            firstName: supplier.firstName,
-            lastName: supplier.lastName,
-            joinedDate: formatDate(supplier.joinedDate),
-            gender: supplier.gender,
-            dob: formatDate(supplier.dob),
-            contactNumber: supplier.contactNo,
-            email: supplier.email,
-            streetAddress: supplier.addressLine01,
-            addressLine2: supplier.addressLine02,
-            country: supplier.addressLine03,
-            province: supplier.addressLine04,
-            city: supplier.addressLine05,
-            postalCode: supplier.postalCode,
+            firstName: employee.firstName,
+            lastName: employee.lastName,
+            designation: employee.designation,
+            joinedDate: formatDate(employee.joinedDate),
+            gender: employee.gender,
+            dob: formatDate(employee.dob),
+            contactNumber: employee.contactNo,
+            email: employee.email,
+            streetAddress: employee.addressLine01,
+            addressLine2: employee.addressLine02,
+            country: employee.addressLine03,
+            province: employee.addressLine04,
+            city: employee.addressLine05,
+            postalCode: employee.postalCode,
         });
     }, [isModalOpen]);
 
@@ -53,10 +55,11 @@ function UpdateSupplier({ isModalOpen, setIsModalOpen, onUpdate, supplier}: Read
     }
 
     function handleUpdate() {
-        const updatedSuppplier = {
-            ...supplier,
+        const updatedStaff = {
+            ...employee,
             firstName: formData.firstName,
             lastName: formData.lastName,
+            designation: formData.designation,
             gender: formData.gender,
             joinedDate: new Date(formData.joinedDate).toISOString(),
             dob: new Date(formData.dob).toISOString(),
@@ -70,7 +73,7 @@ function UpdateSupplier({ isModalOpen, setIsModalOpen, onUpdate, supplier}: Read
             email: formData.email,
 
         };
-        onUpdate(updatedSuppplier);
+        onUpdate(updatedStaff);
         setIsModalOpen(false);
     }
 
@@ -112,7 +115,7 @@ function UpdateSupplier({ isModalOpen, setIsModalOpen, onUpdate, supplier}: Read
                     }}
                 >
 
-                    <h1 className="text-center text-xl font-semibold mb-5">Add Supplier Member</h1>
+                    <h1 className="text-center text-xl font-semibold mb-5">Add Employee Member</h1>
 
                     <div className="overflow-y-auto h-[60vh] custom-scrollbar p-2">
                         {/* First Name and Last Name */}`
@@ -149,8 +152,30 @@ function UpdateSupplier({ isModalOpen, setIsModalOpen, onUpdate, supplier}: Read
                             </div>
                         </div>
 
-                        {/*   Gender */}
+                        {/* Designation and Gender */}
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div className="sm:col-span-3">
+                                <label htmlFor="designation" className="block text-sm font-medium text-gray-900">Designation</label>
+                                <div className="mt-2">
+                                    <select
+                                        name="designation"
+                                        id="designation"
+                                        value={formData.designation}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                    >
+                                        <option value="" disabled>Select Designation</option>
+                                        <option value="TEACOLLEC">Tea Collector</option>
+                                        <option value="MACHINEOP">Machine Operators</option>
+                                        <option value="TEABLENDER">Tea Blenders</option>
+                                        <option value="PACKAGING">Packaging Workers</option>
+                                        <option value="LEAFCOLLECTOR">Leaf Collectors</option>
+                                        <option value="ELECTRICAL">Electrical & Mechanical Technicians</option>
+                                        <option value="OTHER">OTHER</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div className="sm:col-span-3">
                                 <label htmlFor="gender"
                                        className="block text-sm font-medium text-gray-900">Gender</label>
@@ -371,4 +396,4 @@ function UpdateSupplier({ isModalOpen, setIsModalOpen, onUpdate, supplier}: Read
     );
 }
 
-export default UpdateSupplier;
+export default UpdateEmployee;

@@ -15,11 +15,6 @@ export const store = configureStore({
 
     },
 
-    middleware: (getDefaultMiddleware) =>   getDefaultMiddleware({
-        serializableCheck: false,
-    }
-    )
-
 });
 
 export type AppDispatch = typeof store.dispatch;

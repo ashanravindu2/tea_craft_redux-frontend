@@ -11,7 +11,7 @@ function Navigation({ isOpen}) {
         { id: 'home', label: 'Home', icon: 'fa-house', path: '/home' },
         { id: 'employee', label: 'Employee', icon: 'fa-user-group', path: '/employee' },
         { id: 'supplier', label: 'Supplier', icon: 'fa-handshake', path: '/supplier' },
-        { id: 'rowMaterial', label: 'Raw Material', icon: 'fas fa-leaf', path: '/rowMaterial' },
+        { id: 'rawMaterial', label: 'Raw Material', icon: 'fas fa-leaf', path: '/rawMaterial' },
         { id: 'production', label: 'Production', icon: 'fa-box', path: '/production' },
         { id: 'product', label: 'Product', icon: 'fas fa-store', path: '/product' },
 

@@ -2,10 +2,10 @@ import {motion} from "framer-motion";
 import TableData from "../component/TableData.tsx";
 import {Employee} from "../model/Employee.ts";
 import {useDispatch, useSelector} from "react-redux";
-import AddEmployee from "../component/AddEmployee.tsx";
+import AddEmployee from "../component/saveModel/AddEmployee.tsx";
 
-import ViewEmployee from "../component/ViewEmployee.tsx";
-import UpdateEmployee from "../component/UpdateEmployee.tsx";
+import ViewEmployee from "../component/viewModel/ViewEmployee.tsx";
+import UpdateEmployee from "../component/updateModel/UpdateEmployee.tsx";
 import DeleteModal from "../component/DeleteModal.tsx";
 import {useEffect, useState} from "react";
 import {deleteEmployee, getAllEmployees, saveEmployee, updateEmployee} from "../slice/EmployeeSlice.ts";
@@ -24,7 +24,7 @@ export function EmployeePage() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [isUpdateModalOpen,setIsUpdateModalOpen] = useState(false);
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
     const renderEmployeRow = (employee?: Employee) => {

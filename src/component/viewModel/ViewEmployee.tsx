@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
-import {formatDate} from "../util/util.ts";
-import {Employee} from "../model/Employee.ts";
+import {formatDate} from "../../util/util.ts";
+import {Employee} from "../../model/Employee.ts";
 
 interface ViewEmployeeProps {
     isOpenModal: boolean;

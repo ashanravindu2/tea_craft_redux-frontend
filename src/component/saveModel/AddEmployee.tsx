@@ -2,19 +2,21 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import * as React from "react";
-import {Supplier} from "../model/Supplier.ts";
+import {Employee} from "../../model/Employee.ts";
 
-
-interface AddSupplierProps {
+interface AddEmployeeProps {
     isModalOpen: boolean;
     setIsModalOpen: (open: boolean) => void;
-    onSave: (newSupplier: Supplier) => void;
+    onSave: (e:Employee) => void;
 }
 
-function AddSupplier({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddSupplierProps>){
+function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmployeeProps>){
+
+
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
+        designation: "",
         joinedDate: "",
         gender: "",
         dob: "",
@@ -33,14 +35,21 @@ function AddSupplier({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddSuppli
         setFormData({ ...formData, [name]: value });
     }
 
-    function handleSave() {
-        const newSupllier = new Supplier(
-            "S1212",
+    const handleSave = () => {
+        // if (!formData.firstName || !formData.lastName || !formData.designation || !formData.email){
+        //     alert("All fields are required!");
+        //     return;
+        // }
+
+
+        const newEmployees = new Employee(
+            "EMP" + Math.floor(Math.random() * 1000),
             formData.firstName,
             formData.lastName,
+            formData.designation,
             formData.gender,
-            new Date(formData.joinedDate).toISOString(),
-            new Date(formData.dob).toISOString(),
+            formData.joinedDate,
+            formData.dob,
             formData.streetAddress,
             formData.addressLine2,
             formData.country,
@@ -49,10 +58,15 @@ function AddSupplier({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddSuppli
             formData.postalCode,
             formData.contactNumber,
             formData.email
+
         );
-        onSave(newSupllier);
+
+        console.log("Add",newEmployees);
+        onSave(newEmployees);
         setIsModalOpen(false);
+
     }
+
 
     return (
         isModalOpen && (
@@ -131,6 +145,30 @@ function AddSupplier({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddSuppli
 
                         {/* Designation and Gender */}
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                <div className="sm:col-span-3">
+                                    <label htmlFor="designation"
+                                           className="block text-sm font-medium text-gray-900">Designation</label>
+                                    <div className="mt-2">
+                                        <select
+                                            name="designation"
+                                            id="designation"
+                                            value={formData.designation}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                        >
+                                            <option value="" disabled>Select Designation</option>
+                                            <option value="TEACOLLEC">Tea Collector</option>
+                                            <option value="MACHINEOP">Machine Operators</option>
+                                            <option value="TEABLENDER">Tea Blenders</option>
+                                            <option value="PACKAGING">Packaging Workers</option>
+                                            <option value="LEAFCOLLECTOR">Leaf Collectors</option>
+                                            <option value="ELECTRICAL">Electrical & Mechanical Technicians</option>
+                                            <option value="OTHER">OTHER</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                             <div className="sm:col-span-3">
                                 <label htmlFor="gender"
                                        className="block text-sm font-medium text-gray-900">Gender</label>
@@ -352,4 +390,4 @@ function AddSupplier({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddSuppli
     );
 }
 
-export default AddSupplier;
+export default AddEmployee;

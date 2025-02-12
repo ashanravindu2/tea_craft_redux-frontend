@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 
 import {Supplier} from "../model/Supplier.ts";
 import DeleteModal from "../component/DeleteModal.tsx";
-import AddSupplier from "../component/AddSupllier.tsx";
-import ViewSupplier from "../component/ViewSupplier.tsx";
-import UpdateSupplier from "../component/UpdateSupplier.tsx";
+import AddSupplier from "../component/saveModel/AddSupllier.tsx";
+import ViewSupplier from "../component/viewModel/ViewSupplier.tsx";
+import UpdateSupplier from "../component/updateModel/UpdateSupplier.tsx";
 import {useState} from "react";
 import {deleteSupplier, saveSupplier, updateSupplier} from "../slice/SupplierSlice.ts";
 import {AppDispatch} from "../store/store.tsx";

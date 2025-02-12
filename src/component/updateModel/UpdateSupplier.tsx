@@ -1,72 +1,78 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 
+import {formatDate} from "../../util/util.ts";
 import * as React from "react";
-import {Employee} from "../model/Employee.ts";
+import {Supplier} from "../../model/Supplier.ts";
 
-interface AddEmployeeProps {
+interface UpdateModalProps{
     isModalOpen: boolean;
     setIsModalOpen: (open: boolean) => void;
-    onSave: (e:Employee) => void;
+    onUpdate: (updatedSupllier: Supplier) => void;
+    supplier:Supplier;
 }
 
-function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmployeeProps>){
-
-
+function UpdateSupplier({ isModalOpen, setIsModalOpen, onUpdate, supplier}: Readonly<UpdateModalProps>)  {
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        designation: "",
-        joinedDate: "",
-        gender: "",
-        dob: "",
-        contactNumber: "",
-        email: "",
-        streetAddress: "",
-        addressLine2: "",
-        country: "",
-        province: "",
-        city: "",
-        postalCode: "",
+        firstName: supplier.firstName,
+        lastName: supplier.lastName,
+        joinedDate: formatDate(supplier.joinedDate),
+        gender: supplier.gender,
+        dob: formatDate(supplier.dob),
+        contactNumber: supplier.contactNo,
+        email: supplier.email,
+        streetAddress: supplier.addressLine01,
+        addressLine2: supplier.addressLine02,
+        country: supplier.addressLine03,
+        province: supplier.addressLine04,
+        city: supplier.addressLine05,
+        postalCode: supplier.postalCode,
     });
+
+    useEffect(() => {
+        setFormData({
+            firstName: supplier.firstName,
+            lastName: supplier.lastName,
+            joinedDate: formatDate(supplier.joinedDate),
+            gender: supplier.gender,
+            dob: formatDate(supplier.dob),
+            contactNumber: supplier.contactNo,
+            email: supplier.email,
+            streetAddress: supplier.addressLine01,
+            addressLine2: supplier.addressLine02,
+            country: supplier.addressLine03,
+            province: supplier.addressLine04,
+            city: supplier.addressLine05,
+            postalCode: supplier.postalCode,
+        });
+    }, [isModalOpen]);
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     }
 
-    const handleSave = () => {
-        // if (!formData.firstName || !formData.lastName || !formData.designation || !formData.email){
-        //     alert("All fields are required!");
-        //     return;
-        // }
+    function handleUpdate() {
+        const updatedSuppplier = {
+            ...supplier,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            gender: formData.gender,
+            joinedDate: new Date(formData.joinedDate).toISOString(),
+            dob: new Date(formData.dob).toISOString(),
+            streetAddress: formData.streetAddress,
+            addressLine2: formData.addressLine2,
+            country: formData.country,
+            province: formData.province,
+            city: formData.city,
+            postalCode: formData.postalCode,
+            contactNumber: formData.contactNumber,
+            email: formData.email,
 
-
-        const newEmployees = new Employee(
-            "EMP" + Math.floor(Math.random() * 1000),
-            formData.firstName,
-            formData.lastName,
-            formData.designation,
-            formData.gender,
-            formData.joinedDate,
-            formData.dob,
-            formData.streetAddress,
-            formData.addressLine2,
-            formData.country,
-            formData.province,
-            formData.city,
-            formData.postalCode,
-            formData.contactNumber,
-            formData.email
-
-        );
-
-        console.log("Add",newEmployees);
-        onSave(newEmployees);
+        };
+        onUpdate(updatedSuppplier);
         setIsModalOpen(false);
-
     }
-
 
     return (
         isModalOpen && (
@@ -106,11 +112,11 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
                     }}
                 >
 
-                    <h1 className="text-center text-xl font-semibold mb-5">Add Staff Member</h1>
+                    <h1 className="text-center text-xl font-semibold mb-5">Add Supplier Member</h1>
 
                     <div className="overflow-y-auto h-[60vh] custom-scrollbar p-2">
-                        {/* First Name and Last Name */}
-                        <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-10">
+                        {/* First Name and Last Name */}`
+                        <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-3">
                                 <label htmlFor="first-name" className="block text-sm font-medium text-gray-900">First
                                     name</label>
@@ -143,32 +149,8 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
                             </div>
                         </div>
 
-                        {/* Designation and Gender */}
+                        {/*   Gender */}
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                <div className="sm:col-span-3">
-                                    <label htmlFor="designation"
-                                           className="block text-sm font-medium text-gray-900">Designation</label>
-                                    <div className="mt-2">
-                                        <select
-                                            name="designation"
-                                            id="designation"
-                                            value={formData.designation}
-                                            onChange={handleInputChange}
-                                            required
-                                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                        >
-                                            <option value="" disabled>Select Designation</option>
-                                            <option value="TEACOLLEC">Tea Collector</option>
-                                            <option value="MACHINEOP">Machine Operators</option>
-                                            <option value="TEABLENDER">Tea Blenders</option>
-                                            <option value="PACKAGING">Packaging Workers</option>
-                                            <option value="LEAFCOLLECTOR">Leaf Collectors</option>
-                                            <option value="ELECTRICAL">Electrical & Mechanical Technicians</option>
-                                            <option value="OTHER">OTHER</option>
-                                        </select>
-                                    </div>
-                                </div>
-
                             <div className="sm:col-span-3">
                                 <label htmlFor="gender"
                                        className="block text-sm font-medium text-gray-900">Gender</label>
@@ -239,7 +221,6 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
                                     />
                                 </div>
                             </div>
-
                         </div>
 
                         {/* Address Fields */}
@@ -365,10 +346,10 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
                             <div className="mt-2">
                                 <button
                                     id="btn-save"
-                                    onClick={handleSave}
-                                    className="bg-green-600 w-full rounded-lg py-2 px-4 text-white hover:bg-green-700 focus:outline-none"
+                                    onClick={handleUpdate}
+                                    className="bg-orange-600 w-full rounded-lg py-2 px-4 text-white hover:bg-orange-700 focus:outline-none"
                                 >
-                                    Save
+                                    Update
                                 </button>
                             </div>
                         </div>
@@ -390,4 +371,4 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
     );
 }
 
-export default AddEmployee;
+export default UpdateSupplier;

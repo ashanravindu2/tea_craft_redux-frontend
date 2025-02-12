@@ -8,7 +8,7 @@ export class RawMaterial {
     constructor(
         stockID: string,
         supplierID: string,
-        quantityInKg: number,
+        quantityInKg:  number,
         dateReceived: Date | string,
     ) {
         this.stockID = stockID;

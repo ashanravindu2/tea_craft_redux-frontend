@@ -29,7 +29,7 @@ function App() {
                 {path: '/home', element: <Home/>},
                 {path: '/employee', element: <EmployeePage/>},
                 {path: '/supplier', element: <SupplierPage/>},
-                {path: '/rowMaterial', element: <RowMaterialPage/>},
+                {path: '/rawMaterial', element: <RowMaterialPage/>},
                 {path: '/production', element: <ProductionPage/>},
                 {path: '/product', element: <ProductPage/>},
 
