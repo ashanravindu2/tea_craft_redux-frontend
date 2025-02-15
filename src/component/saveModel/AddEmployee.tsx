@@ -158,12 +158,12 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
                                             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
                                         >
                                             <option value="" disabled>Select Designation</option>
-                                            <option value="TEACOLLEC">Tea Collector</option>
-                                            <option value="MACHINEOP">Machine Operators</option>
-                                            <option value="TEABLENDER">Tea Blenders</option>
-                                            <option value="PACKAGING">Packaging Workers</option>
-                                            <option value="LEAFCOLLECTOR">Leaf Collectors</option>
-                                            <option value="ELECTRICAL">Electrical & Mechanical Technicians</option>
+                                            <option value="Tea Collector">Tea Collector</option>
+                                            <option value="Machine Operators">Machine Operators</option>
+                                            <option value="Tea Blenders">Tea Blenders</option>
+                                            <option value="Packaging Workers">Packaging Workers</option>
+                                            <option value="Leaf Collectors">Leaf Collectors</option>
+                                            <option value="Electrical & Mechanical Technicians">Electrical & Mechanical Technicians</option>
                                             <option value="OTHER">OTHER</option>
                                         </select>
                                     </div>

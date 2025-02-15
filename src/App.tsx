@@ -4,7 +4,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {RootLayout} from "./component/RootLayout.tsx";
 import {Toaster} from "react-hot-toast";
 import {Error} from "./component/Error.tsx";
-import {Home} from "./pages/Home.tsx";
+
 import {EmployeePage} from "./pages/EmployeePage.tsx";
 import {SupplierPage} from "./pages/SupplierPage.tsx";
 import {RowMaterialPage} from "./pages/RowMaterialPage.tsx";
@@ -13,6 +13,7 @@ import {store} from "./store/store.tsx";
 import {ProductionPage} from "./pages/ProductionPage.tsx";
 import {ProductPage} from "./pages/ProductPage.tsx";
 import {Login} from "./pages/Login.tsx";
+import Home from "./pages/Home.tsx";
 
 
 
