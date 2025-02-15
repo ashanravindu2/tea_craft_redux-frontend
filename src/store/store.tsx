@@ -4,9 +4,11 @@ import supplierSlice from "../slice/SupplierSlice.ts";
 import rawMaterialSlice from "../slice/RawMaterialSlice.ts";
 import productionSlice from "../slice/ProductionSlice.ts";
 import productSlice from "../slice/ProductSlice.ts";
+import userSlice from "../slice/user-slice.ts";
 
 export const store = configureStore({
     reducer: {
+        userReducer: userSlice,
         employee: employeeSlice,
         supplier: supplierSlice,
         rawMaterial: rawMaterialSlice,

@@ -12,16 +12,26 @@ import {Provider} from "react-redux";
 import {store} from "./store/store.tsx";
 import {ProductionPage} from "./pages/ProductionPage.tsx";
 import {ProductPage} from "./pages/ProductPage.tsx";
-// import SignIn from "./pages/SignIn.tsx";
+import {Login} from "./pages/Login.tsx";
+
+
 
 
 
 function App() {
+
+
     const routes = createBrowserRouter([
         // {
         //     path: '/signIn',
         //     element: <SignIn/>, // Set SignIn as the default page
         // },
+        {
+            path: '/login',
+            element:<Login/>
+        },
+
+
         {
             path: '',
             element: <RootLayout/>,
@@ -36,14 +46,14 @@ function App() {
                 {path: '*', element: <Error/>}
 
             ]
-        }
+        },
+
     ]);
 
     return (
         <>
             <Toaster position={"top-center"}/>
         <Provider store={store}>
-
                 <RouterProvider router={routes}/>
         </Provider>
             </>

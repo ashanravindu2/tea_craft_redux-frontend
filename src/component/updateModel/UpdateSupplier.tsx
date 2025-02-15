@@ -74,6 +74,8 @@ function UpdateSupplier({ isModalOpen, setIsModalOpen, onUpdate, supplier}: Read
         setIsModalOpen(false);
     }
 
+
+
     return (
         isModalOpen && (
 

@@ -25,8 +25,10 @@ function AddRawMaterial({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddRaw
     const dispatch = useDispatch<AppDispatch>();  // A hook to access the dispatch function from the Redux store
 
     useEffect(() => {
-        dispatch(getAllSuppliers());
-    }, [dispatch]);
+        if (!supplierMember || supplierMember.length === 0) {
+            dispatch(getAllSuppliers());
+        }
+    }, [dispatch, supplierMember]);
 
 
 
@@ -40,6 +42,17 @@ function AddRawMaterial({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddRaw
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        if (name === "supplierID") {
+            const supplier = supplierMember.find((supplier) => supplier.supplierID === value);
+            if (supplier) {
+                /*supplierName input set name*/
+                const supplierName = document.getElementById("supplierName") as HTMLInputElement;
+                supplierName.value = supplier.firstName + " " + supplier.lastName;
+            }
+
+
+        }
     }
 
     const handleSave = () => {

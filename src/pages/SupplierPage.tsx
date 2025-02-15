@@ -9,15 +9,15 @@ import DeleteModal from "../component/DeleteModal.tsx";
 import AddSupplier from "../component/saveModel/AddSupllier.tsx";
 import ViewSupplier from "../component/viewModel/ViewSupplier.tsx";
 import UpdateSupplier from "../component/updateModel/UpdateSupplier.tsx";
-import {useState} from "react";
-import {deleteSupplier, saveSupplier, updateSupplier} from "../slice/SupplierSlice.ts";
+import {useEffect, useState} from "react";
+import {deleteSupplier, getAllSuppliers, saveSupplier, updateSupplier} from "../slice/SupplierSlice.ts";
 import {AppDispatch} from "../store/store.tsx";
 
 
 export function SupplierPage() {
     const supplierMember : Supplier[] = useSelector((state:  {supplier:Supplier[]} ) => state.supplier);
 
-    const supplierHeaders = ['Name','Email', 'Address', 'Contact No', 'Gender', 'Actions'];
+    const supplierHeaders = ['Code','Name', 'Email', 'Address', 'Contact No', 'Actions'];
     const dispatch = useDispatch<AppDispatch>();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -26,11 +26,12 @@ export function SupplierPage() {
 
     const renderSupplierRow = (supplier: Supplier) => (
         <>
+            <div className="p-2 truncate">{supplier.supplierID}</div>
             <div className="p-2 truncate">{supplier.firstName} {supplier.lastName}</div>
             <div className="p-2 hidden sm:block truncate">{supplier.email}</div>
-            <div className="p-2 truncate">{supplier.addressLine01}{supplier.addressLine02}</div>
+            <div className="p-2 truncate">{supplier.addressLine01} , {supplier.addressLine02}</div>
             <div className="p-2 truncate">{supplier.contactNo}</div>
-            <div className="p-2 truncate">{supplier.gender}</div>
+
         </>
     );
 
@@ -70,6 +71,7 @@ export function SupplierPage() {
                 onDelete={() => {
                     toast.dismiss(t.id);
                     dispatch(deleteSupplier(supplier.supplierID));
+
                     toast.success(
                         <div className="flex items-center space-x-2 ">
                             <i className="fa fa-trash text-red-600"></i>
@@ -84,8 +86,11 @@ export function SupplierPage() {
             />
         ));
     }
-
-
+    useEffect(() => {
+        if (!supplierMember || supplierMember.length === 0) {
+            dispatch(getAllSuppliers());
+        }
+    }, [dispatch]);
 
     return (
         <motion.div

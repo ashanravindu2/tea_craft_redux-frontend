@@ -1,8 +1,4 @@
 import * as React from "react";
-import {useEffect} from "react";
-import {getAllSuppliers} from "../slice/SupplierSlice.ts";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../store/store.tsx";
 
 
 

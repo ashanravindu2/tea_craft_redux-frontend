@@ -6,7 +6,7 @@ import AddRawMaterial from "../component/saveModel/AddRawMaterial.tsx";
 
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
-import {deleteRawMaterial, saveRawMaterial, updateRawMaterial} from "../slice/RawMaterialSlice.ts";
+import {deleteRawMaterial, getAllRawMaterials, saveRawMaterial, updateRawMaterial} from "../slice/RawMaterialSlice.ts";
 import DeleteModal from "../component/DeleteModal.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RawMaterial} from "../model/RawMaterial.ts";
@@ -14,13 +14,15 @@ import {AppDispatch} from "../store/store.tsx";
 import {formatDate} from "../util/util.ts";
 import ViewRawMaterial from "../component/viewModel/ViewRawMaterial.tsx";
 import UpdateRawMaterial from "../component/updateModel/UpdateRawMaterial.tsx";
+import {Supplier} from "../model/Supplier.ts";
+import {getAllProductions} from "../slice/ProductionSlice.ts";
 
 
 
 export function RowMaterialPage() {
 
     const rawMaterials : RawMaterial[] = useSelector((state:  {rawMaterial:RawMaterial[]} ) => state.rawMaterial);
-
+    const supplierMember : Supplier[] = useSelector((state:  {supplier:Supplier[]} ) => state.supplier);
     const rawMaterialHeaders = ['StockID', 'SupplierID', 'Supplier Name', 'Quantity/KG', 'Received Date', 'Actions'];
 
     const dispatch  = useDispatch<AppDispatch>() // A hook to access the dispatch function from the Redux store
@@ -32,12 +34,22 @@ export function RowMaterialPage() {
 
 
     const renderRawMaterialRow = (rawMaterial?: RawMaterial) => {
+
+        // supplierId same supplier name filter get
+
+
         if (!rawMaterial) return <div className={"p-2"}>Invalid Raw Material Data</div>;
+
         return (
             <>
                 <div className="p-2 truncate">{rawMaterial.stockID}</div>
                 <div className="p-2 truncate">{rawMaterial.supplierID}</div>
-                <div className="p-2 truncate">{rawMaterial.supplierName}</div>
+                <div className="p-2 truncate">{
+
+                    supplierMember.filter((supplier) => supplier.supplierID === rawMaterial.supplierID).map((filteredSupplier) => {
+                        return filteredSupplier.firstName + " " + filteredSupplier.lastName;
+                    })
+                }</div>
                 <div className="p-2 truncate">{rawMaterial.quantityInKg}</div>
                 <div className="p-2 truncate">{formatDate(rawMaterial.dateReceived)}</div>
             </>
@@ -73,6 +85,12 @@ export function RowMaterialPage() {
             { icon: false }
         );
     }
+
+    useEffect(() => {
+        if (!rawMaterials || rawMaterials.length === 0) {
+            dispatch(getAllRawMaterials());
+        }
+    }, [dispatch]);
 
     function handleDeleteRawMaterial(newRawMaterial : RawMaterial) {
         toast.custom((t) => (

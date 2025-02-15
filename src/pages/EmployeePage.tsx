@@ -11,12 +11,14 @@ import {useEffect, useState} from "react";
 import {deleteEmployee, getAllEmployees, saveEmployee, updateEmployee} from "../slice/EmployeeSlice.ts";
 import {AppDispatch} from "../store/store.tsx";
 import toast from "react-hot-toast";
+import {Supplier} from "../model/Supplier.ts";
+import {getAllSuppliers} from "../slice/SupplierSlice.ts";
 
 
 
 
 export function EmployeePage() {
-    const employeeMember : Employee[] = useSelector((state:  {employee:Employee[]} ) => state.employee);
+
 
     const employeeHeaders = ['Name', 'Designation', 'Email', 'Contact No', 'Gender', 'Actions'];
     const dispatch = useDispatch<AppDispatch>();  // A hook to access the dispatch function from the Redux store
@@ -70,6 +72,10 @@ export function EmployeePage() {
 
     }
 
+    const employeeMember : Employee[] = useSelector((state:  {employee:Employee[]} ) => state.employee);
+
+
+
     function handleDeleteEmploy(employee:Employee){
 
         toast.custom((t) => (
@@ -93,6 +99,13 @@ export function EmployeePage() {
 
         ));
     }
+
+    useEffect(() => {
+        if (!employeeMember || employeeMember.length === 0) {
+            dispatch(getAllEmployees());
+        }
+    }, [dispatch]);
+
 
     return (
         <motion.div

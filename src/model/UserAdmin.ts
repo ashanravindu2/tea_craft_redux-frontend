@@ -1,17 +1,18 @@
 export class UserAdmin{
     email: string;
     password: string;
-    role: 'Admin' | 'Manager' | 'Employee';
+    role: string;
 
     constructor(
         email: string,
         password: string,
-        role: 'Admin' | 'Manager' | 'Employee',
+        role: string,
     ) {
         this.email = email;
         this.password = password;
         this.role = role;
     }
+
 
 
 }
