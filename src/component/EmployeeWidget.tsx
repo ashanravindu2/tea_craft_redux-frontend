@@ -25,8 +25,8 @@ function StaffWidget() {
 
     return (
         <div className="bg-white shadow-lg rounded-lg p-5">
-            <h2 className="text-lg font-semibold mb-4 text-center">Staff Members</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <h2 className="text-lg font-semibold mb-4 text-center">Employee Members</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-6 gap-6">
                 {roles.map((role) => (
                     <div
                         key={role.name}
