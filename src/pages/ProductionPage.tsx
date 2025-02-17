@@ -3,7 +3,7 @@ import {motion} from "framer-motion";
 
 import {Production} from "../model/Production.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch} from "../store/store.tsx";
+
 import { useState} from "react";
 
 import toast from "react-hot-toast";
