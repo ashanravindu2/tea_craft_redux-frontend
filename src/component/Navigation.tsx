@@ -13,7 +13,7 @@ function Navigation({ isOpen}) {
         { id: 'supplier', label: 'Supplier', icon: 'fa-handshake', path: '/supplier' },
         { id: 'rawMaterial', label: 'Raw Material', icon: 'fas fa-leaf', path: '/rawMaterial' },
         { id: 'production', label: 'Production', icon: 'fa-box', path: '/production' },
-        { id: 'product', label: 'Product', icon: 'fas fa-store', path: '/product' },
+        { id: 'log', label: 'Monitoring Logs', icon: 'fas fa-store', path: '/log' },
 
 
 

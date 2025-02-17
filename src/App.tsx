@@ -11,9 +11,11 @@ import {RowMaterialPage} from "./pages/RowMaterialPage.tsx";
 import {Provider} from "react-redux";
 import {store} from "./store/store.tsx";
 import {ProductionPage} from "./pages/ProductionPage.tsx";
-import {ProductPage} from "./pages/ProductPage.tsx";
+
 import {Login} from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
+
+import LogPage from "./pages/LogPage.tsx";
 
 
 
@@ -42,7 +44,7 @@ function App() {
                 {path: '/supplier', element: <SupplierPage/>},
                 {path: '/rawMaterial', element: <RowMaterialPage/>},
                 {path: '/production', element: <ProductionPage/>},
-                {path: '/product', element: <ProductPage/>},
+                {path: '/log', element: <LogPage/>},
 
                 {path: '*', element: <Error/>}
 

@@ -33,7 +33,12 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+
+        console.log("aaaaa",name==="joinedDate",name,value);
     }
+
+
 
     const handleSave = () => {
         // if (!formData.firstName || !formData.lastName || !formData.designation || !formData.email){
