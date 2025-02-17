@@ -35,11 +35,7 @@ export function RowMaterialPage() {
 
     const renderRawMaterialRow = (rawMaterial?: RawMaterial) => {
 
-        // supplierId same supplier name filter get
-
-
         if (!rawMaterial) return <div className={"p-2"}>Invalid Raw Material Data</div>;
-
         return (
             <>
                 <div className="p-2 truncate">{rawMaterial.stockID}</div>

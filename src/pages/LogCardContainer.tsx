@@ -7,6 +7,7 @@ interface LogCardContainerProps {
 }
 
 function LogCardContainer({ logs, onCardClick } : Readonly<LogCardContainerProps>) {
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 " id="logContainer">
             {logs.map((log, index) => (
@@ -15,9 +16,11 @@ function LogCardContainer({ logs, onCardClick } : Readonly<LogCardContainerProps
                     className="bg-white  border border-gray-200 rounded-xl h-96 shadow-lg hover:shadow-xl transition-shadow cursor-pointer flex flex-col"
                     onClick={() => onCardClick(log)}
                 >
+
                     {log.observedImage && (
+
                         <img
-                            src={log.observedImage}
+                            src={URL.createObjectURL(new Blob([log.observedImage]))}
                             alt="Observation"
                             className="w-full h-40 object-cover rounded-t-xl"
                         />

@@ -1,6 +1,7 @@
 import {Production} from "../model/Production.ts";
 import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {deleteRawMaterial} from "./RawMaterialSlice.ts";
 
 const initialState : Production[] = [];
 
@@ -58,7 +59,7 @@ export const getAllProductions = createAsyncThunk(
 );
 
 const productionSlice = createSlice({
-    name: 'production',
+    name: 'productions',
     initialState,
     reducers: {},
     extraReducers: (builder) => {

@@ -1,27 +1,32 @@
 import {motion} from "framer-motion";
 
 
-import {Production} from "../model/Production.ts";
+
 import {useDispatch, useSelector} from "react-redux";
 
-import { useState} from "react";
+import {useEffect, useState} from "react";
 
 import toast from "react-hot-toast";
-import {deleteProduction, saveProduction, updateProduction} from "../slice/ProductionSlice.ts";
+import {deleteProduction, getAllProductions, saveProduction, updateProduction} from "../slice/ProductionSlice.ts";
 import DeleteModal from "../component/DeleteModal.tsx";
 import {formatDate} from "../util/util.ts";
 import AddProduction from "../component/saveModel/AddProduction.tsx";
 import ViewProduction from "../component/viewModel/ViewProduction.tsx";
 import TableData from "../component/TableData.tsx";
 import {UpdateProduction} from "../component/updateModel/UpdateProduction.tsx";
+import {AppDispatch, RootState} from "../store/store.tsx";
+import {getAllRawMaterials} from "../slice/RawMaterialSlice.ts";
+import {RawMaterial} from "../model/RawMaterial.ts";
+import {Production} from "../model/Production.ts";
+
 
 
 export function ProductionPage() {
 
     const productions : Production[] = useSelector((state:  {production:Production[]} ) => state.production);
 
-    const productionHeaders = ['productionID', 'stockID', 'stockID', 'processedQuantity','logs', 'Actions'];
-    const dispatch = useDispatch<AppDispatch>();  // A hook to access the dispatch function from the Redux store
+    const productionHeaders = ['productionID', 'Quality status', 'processDate', 'processedQuantity','logs', 'Actions'];
+    const dispatch = useDispatch<AppDispatch>();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -30,16 +35,30 @@ export function ProductionPage() {
 
     const renderProductionRow = (production?: Production) => {
         if (!production) return <div className={"p-2"}>Invalid Production Data</div>;
+        console.log("SSSSSSSS",production.qualityChecks)
         return (
             <>
                 <div className="p-2 truncate">{production.productionID}</div>
-                <div className="p-2 truncate">{production.stockID}</div>
+
+                {/* Quality Check Badge */}
+                <div className="p-2 truncate">
+                    {production.qualityChecks ? (
+                        <span className="px-2 py-1 text-xs font-semibold text-white bg-green-500 rounded-full">
+                        Passed
+                    </span>
+                    ) : (
+                        <span className="px-2 py-1 text-xs font-semibold text-white bg-red-500 rounded-full">
+                        Failed
+                    </span>
+                    )}
+                </div>
+
                 <div className="p-2 truncate">{formatDate(production.processDate)}</div>
                 <div className="p-2 truncate">{production.processedQuantity}</div>
                 <div className="p-2 truncate">{production.logs}</div>
-
             </>
         );
+
     };
 
     function handleAddProduction(newProduction: Production) {
@@ -58,6 +77,7 @@ export function ProductionPage() {
     function openUpdateModal(production:Production) {
         setSelectedProduction(production);
         setIsUpdateModalOpen(true);
+
     }
 
     function handleUpdateProduction(production:Production) {
@@ -73,15 +93,22 @@ export function ProductionPage() {
 
     }
 
+    useEffect(() => {
+        if (!productions || productions.length === 0) {
+            dispatch(getAllProductions());
+        }
+    }, [ dispatch]);
+
+
 
     function handleDeleteProduction(production:Production){
-
         toast.custom((t) => (
             <DeleteModal
                 visible={t.visible}
                 onDelete={() => {
                     toast.dismiss(t.id);
-                    dispatch(deleteProduction(production.productionID));
+                    dispatch(deleteProduction(production.productionID))
+
                     toast.success(
                         <div className="flex items-center space-x-2 ">
                             <i className="fa fa-trash text-red-600"></i>

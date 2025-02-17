@@ -6,12 +6,11 @@ import {Production} from "../../model/Production.ts";
 import {RawMaterial} from "../../model/RawMaterial.ts";
 import {useDispatch, useSelector} from "react-redux";
 
-import {AppDispatch} from "../../store/store.tsx";
-import {getAllRawMaterials, getAlLStockifDate} from "../../slice/RawMaterialSlice.ts";
-import {use} from "framer-motion/m";
+import {getAllRawMaterials} from "../../slice/RawMaterialSlice.ts";
+
 import toast from "react-hot-toast";
-import DeleteModal from "../DeleteModal.tsx";
-import {deleteProduction} from "../../slice/ProductionSlice.ts";
+import {AppDispatch, RootState} from "../../store/store.tsx";
+
 
 
 interface AddProductionProps {
@@ -22,13 +21,13 @@ interface AddProductionProps {
 
 function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProductionProps>){
 
-    const rawMaterials : RawMaterial[] = useSelector((state:  {rawMaterial:RawMaterial[]} ) => state.rawMaterial);
+    const rawMaterials : RawMaterial[] = useSelector((state:  RootState) => state.rawMaterial);
 
     const dispatch = useDispatch<AppDispatch>();
 
 
     const [formData, setFormData] = useState({
-        stockID: "",
+        qualityChecks: false,
         logs: "",
         processDate: "",
         processedQuantity: "",
@@ -93,7 +92,7 @@ function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProd
 
         const newProduction = new Production(
             "PR" + Math.floor(Math.random() * 1000),
-            formData.stockID,
+            formData.qualityChecks,
             new Date(),
             formData.logs,
             Number(formData.processedQuantity)
@@ -169,7 +168,8 @@ function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProd
                             </div>
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="ifStock-Material" className="block text-sm font-medium text-gray-900">Ithuru Raw
+                                <label htmlFor="ifStock-Material" className="block text-sm font-medium text-gray-900">Ithuru
+                                    Raw
                                     Stock*
 
                                 </label>
@@ -182,7 +182,7 @@ function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProd
                                         onChange={handleInputChange}
                                         readOnly={true}
                                         className={`block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 ${
-                                            formData.ifStockMaterial === "0" ? "outline-red-500 focus:outline-red-500 hover:outline-red-500    " : "outline-gray-300" 
+                                            formData.ifStockMaterial === "0" ? "outline-red-500 focus:outline-red-500 hover:outline-red-500    " : "outline-gray-300"
                                         } placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm`}
                                     />
                                 </div>
@@ -205,6 +205,21 @@ function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProd
                                     />
                                 </div>
                             </div>
+
+                            <div className="sm:col-span-3 flex items-center mt-4">
+                                <input
+                                    type="checkbox"
+                                    name="qualityChecks"
+                                    id="quality-Checks"
+                                    checked={formData.qualityChecks}
+                                    onChange={(e) => setFormData({...formData, qualityChecks: e.target.checked})}
+                                    className="h-5 w-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                                />
+                                <label htmlFor="quality-Checks" className="ml-2 text-sm font-medium text-gray-900">
+                                    Quality Check Passed
+                                </label>
+                            </div>
+
                         </div>
 
                         <div className="sm:col-span-3 mt-10">

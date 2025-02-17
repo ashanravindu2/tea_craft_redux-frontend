@@ -5,7 +5,7 @@ export class Logs {
     productionID: string;
     supplierID: string;
     employeeID: string;
-    observedImage: Uint8Array;
+    observedImage: string;
 
     constructor(
         logCode: string,
@@ -14,7 +14,7 @@ export class Logs {
         productionID: string,
         supplierID: string,
         employeeID: string,
-        observedImage: Uint8Array
+        observedImage: string
     ) {
         this.logCode = logCode;
         this.logDate = logDate;

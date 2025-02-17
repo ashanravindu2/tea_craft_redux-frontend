@@ -11,7 +11,7 @@ const  api = axios.create({
 });
 
 
-export const saveLog : any = createAsyncThunk(
+export const saveLog  = createAsyncThunk(
     'log/saveLog',
     async (logs:Logs)=>{
         console.log("Slice",logs);
@@ -24,7 +24,7 @@ export const saveLog : any = createAsyncThunk(
     }
 );
 
-export const updateLog : any = createAsyncThunk(
+export const updateLog  = createAsyncThunk(
     'log/updateLog',
     async (logs:Logs)=>{
         try {
@@ -36,7 +36,7 @@ export const updateLog : any = createAsyncThunk(
     }
 );
 
-export const deleteLog : any = createAsyncThunk(
+export const deleteLog   = createAsyncThunk(
     'log/removeLog',
     async (logCode:string)=>{
         try {
@@ -48,7 +48,7 @@ export const deleteLog : any = createAsyncThunk(
     }
 );
 
-export const getAllLogs : any = createAsyncThunk(
+export const getAllLogs  = createAsyncThunk(
     'log/getAllLogs',
     async ()=>{
         try {

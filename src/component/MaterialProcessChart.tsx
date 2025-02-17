@@ -1,6 +1,6 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import {RawMaterial} from "../model/RawMaterial.ts";
 import {RootState} from "../store/store.tsx";
@@ -12,6 +12,7 @@ interface MaterialProcessChartProps {
 function MaterialProcessChart({isModel}:MaterialProcessChartProps) {
 
     const rawMaterials: RawMaterial[] = useSelector((state: RootState) => state.rawMaterial);
+
 
     // Group crops by category and calculate counts
     const cropCategoryData = rawMaterials.reduce<{ [key: string]: number }>((acc, material) => {
