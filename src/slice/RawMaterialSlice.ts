@@ -57,6 +57,21 @@ export const getAllRawMaterials = createAsyncThunk(
     }
 );
 
+export const getAlLStockifDate = createAsyncThunk(
+    'rawMaterial/getAllStockifDate',
+        async (date:string)=>{
+            try {
+                const response = await api.get(`/getStock/${date}`);
+                console.log("Slice",response.data,"date",date);
+                return response.data;
+            }catch (error){
+                return console.log('error',error)
+        }
+    }
+);
+
+export
+
 
 const rawMaterialSlice = createSlice({
     name: 'rawMaterial',
@@ -109,6 +124,19 @@ const rawMaterialSlice = createSlice({
                     alert("Raw Material Load Failed");
                 })
                 .addCase(getAllRawMaterials.pending, (state, action) => {
+                    alert("Raw Material Loading...");
+            });
+            builder
+                .addCase(getAlLStockifDate.fulfilled, (state, action) => {
+                    action.payload.catch((rawMaterial:RawMaterial)=>{
+                        state.push(rawMaterial);
+                        alert("Raw Material Loaded Successfully");
+                    });
+                })
+                .addCase(getAlLStockifDate.rejected, (state, action) => {
+                    alert("Raw Material Load Failed");
+                })
+                .addCase(getAlLStockifDate.pending, (state, action) => {
                     alert("Raw Material Loading...");
             });
     }
