@@ -4,17 +4,17 @@ import React, {useEffect, useState} from "react";
 
 import {useSelector} from "react-redux";
 
-import {Production} from "../model/Production.ts";
-import {Employee} from "../model/Employee.ts";
-import {Supplier} from "../model/Supplier.ts";
-import {Logs} from "../model/Logs.ts";
+import {Production} from "../../model/Production.ts";
+import {Employee} from "../../model/Employee.ts";
+import {Supplier} from "../../model/Supplier.ts";
+import {Logs} from "../../model/Logs.ts";
 
 interface LogActionProps{
     log: Logs;
     isModalOpen: boolean;
     setModalOpen: (isOpen: boolean) => void;
     onUpdateLog: (log: Logs) => void;
-    onDeleteLog: (logCode: any) => void;
+    onDeleteLog: (logCode: string) => void;
 }
 
 function LogActions({log, isModalOpen, setModalOpen, onUpdateLog, onDeleteLog }: Readonly<LogActionProps>) {

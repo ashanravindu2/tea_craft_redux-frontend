@@ -54,16 +54,19 @@ function ViewProduction({ isOpenModal, setIsOpenModal, production }: Readonly<Vi
                                 </div>
                             </div>
                             <div className="sm:col-span-3">
-                                <label className="block text-sm font-medium text-gray-900">Raw Material Code</label>
+                                <label className="block text-sm font-medium text-gray-900">Stock Material
+                                    Quality</label>
                                 <div className="mt-2">
                                     <input
                                         type="text"
-                                        value={production.stockID}
+                                        value={production.qualityChecks ? "Pass" : "Fail"} // Display "Pass" for true, "Fail" for false
                                         readOnly
-                                        className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 sm:text-sm outline outline-2 -outline-offset-1 outline-gray-300"
+                                        className={`block w-full rounded-md px-3 py-2 text-base text-gray-900 sm:text-sm outline outline-2 -outline-offset-1 
+                ${production.qualityChecks ? "bg-green-300 outline-green-500" : "bg-red-300 outline-red-500"}`}
                                     />
                                 </div>
                             </div>
+
                         </div>
 
                         {/* Designation and Gender */}

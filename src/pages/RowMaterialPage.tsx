@@ -16,6 +16,7 @@ import ViewRawMaterial from "../component/viewModel/ViewRawMaterial.tsx";
 import UpdateRawMaterial from "../component/updateModel/UpdateRawMaterial.tsx";
 import {Supplier} from "../model/Supplier.ts";
 import {getAllProductions} from "../slice/ProductionSlice.ts";
+import {getAllSuppliers} from "../slice/SupplierSlice.ts";
 
 
 
@@ -71,6 +72,7 @@ export function RowMaterialPage() {
     }
 
     function handleUpdateRawMaterial(newRawMaterial : RawMaterial) {
+        console.log("Empagwwwwwwwwwe",newRawMaterial);
         dispatch(updateRawMaterial(newRawMaterial));
         setIsUpdateModalOpen(false);
         toast.success(
@@ -82,11 +84,17 @@ export function RowMaterialPage() {
         );
     }
 
+
     useEffect(() => {
         if (!rawMaterials || rawMaterials.length === 0) {
             dispatch(getAllRawMaterials());
         }
+
     }, [dispatch]);
+
+
+
+
 
     function handleDeleteRawMaterial(newRawMaterial : RawMaterial) {
         toast.custom((t) => (

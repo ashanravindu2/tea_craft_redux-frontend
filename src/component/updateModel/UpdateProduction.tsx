@@ -4,8 +4,11 @@ import {useEffect, useState} from "react";
 import {motion} from "framer-motion";
 import * as React from "react";
 import {RawMaterial} from "../../model/RawMaterial.ts";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {formatDate} from "../../util/util.ts";
+import toast from "react-hot-toast";
+import {AppDispatch, RootState} from "../../store/store.tsx";
+import {getAllProductions} from "../../slice/ProductionSlice.ts";
 
 interface UpdateModalProps{
     isModalOpen: boolean;
@@ -14,37 +17,81 @@ interface UpdateModalProps{
     production:Production;
 }
 export function UpdateProduction({ isModalOpen, setIsModalOpen, onUpdate, production}: Readonly<UpdateModalProps>) {
-    const rawMaterialsID : RawMaterial[] = useSelector((state:  {raw_material:RawMaterial[]} ) => state.raw_material);
+    const rawMaterials : RawMaterial[] = useSelector((state:  RootState) => state.rawMaterial);
+    const dispatch   = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        if (!rawMaterials || rawMaterials.length === 0) {
+            dispatch(getAllProductions());
+        }
+    }, [dispatch]);
+
+
     const [formData, setFormData] = useState({
         production: production.productionID,
-        stockID: production.stockID,
+        qualityChecks: production.qualityChecks,
         processDate:formatDate( production.processDate),
-        logs: (production.logs),
-        processedQuantity: (production.processedQuantity)
+        logs: production.logs,
+        processedQuantity: production.processedQuantity,
+        ifStockMaterial: ""
+
     });
 
     useEffect(() => {
         setFormData({
             production: production.productionID,
-            stockID: production.stockID,
+            qualityChecks: production.qualityChecks,
             processDate:formatDate( production.processDate),
             logs: production.logs,
-            processedQuantity: production.processedQuantity
+            processedQuantity: production.processedQuantity,
+            ifStockMaterial: ""
         });
     }, [isModalOpen]);
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        if (name === "processDate") {
+            console.log("Date",value);
+            const totalQuantity = rawMaterials
+                .filter((stock) => {
+                    const formattedDate = new Date(stock.dateReceived).toISOString().split("T")[0];
+                    return formattedDate === value; // Filter by the specific date
+                })
+                .reduce((sum, stock) => {
+                    return sum + parseFloat(String(stock.quantityInKg)); // Sum up the quantityInKg (ensure it's treated as a number)
+                }, 0); // Initialize sum as 0
+
+            console.log("Total Quantity",totalQuantity);
+            setFormData({ ...formData, ifStockMaterial: String(totalQuantity) })
+        }
+
+        if (name == "processedQuantity"){
+            if (parseFloat(value) > parseFloat(formData.ifStockMaterial)){
+
+                toast("Processed Quantity cannot be greater than the available stock", {
+                    icon: "⚠️",
+                    style: {
+                        backgroundColor: "#ff0300", // pink background
+                        color: "white",         // White text color
+                        fontWeight: "bold",     // Bold text style
+                    },
+                });
+
+                setFormData({ ...formData, processedQuantity: 0 })
+            }
+        }
+
     }
 
     const handleUpdate = () => {
         const updatedProduction = {
             ...production,
-            stockID: formData.stockID,
+            qualityChecks: formData.qualityChecks,
             processDate: formData.processDate,
             logs: formData.logs,
-            processedQuantity: formData.processedQuantity
+            processedQuantity: formData.processedQuantity,
         };
         console.log("Update",updatedProduction);
         onUpdate(updatedProduction);
@@ -87,93 +134,93 @@ export function UpdateProduction({ isModalOpen, setIsModalOpen, onUpdate, produc
                         ease: "easeInOut", // Professional easing
                     }}
                 >
-                    <h1 className="text-center text-xl font-semibold mb-5"> Update Production </h1>
+
+                    <h1 className="text-center text-xl font-semibold mb-5">Process Production</h1>
 
                     <div className="overflow-y-auto h-[60vh] custom-scrollbar p-2">
                         <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-10">
 
-                            <div className="sm:col-span-3">
-                                <label htmlFor="productionID" className="block text-sm font-medium text-gray-900">Process
-                                    Date</label>
-                                <div className="mt-2">
-                                    <input
-                                        type="text"
-                                        name="productionID"
-                                        id="productionID"
-                                        disabled={true}
-                                        value={formData.production}
-
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                    />
-                                </div>
-                            </div>
-
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="stockID" className="block text-sm font-medium text-gray-900">Raw
-                                    Material StockCode
-                                </label>
-                                <div className="mt-2">
-                                    <select
-                                        name="stockID"
-                                        id="stockID"
-                                        value={formData.stockID}
-                                        required
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                    >
-                                        <option value="" disabled>Select StockID</option>
-                                        {rawMaterialsID.map((materials) => (
-                                            <option value={materials.stockID}>{materials.stockID}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="sm:col-span-3">
-                                <label htmlFor="process-date" className="block text-sm font-medium text-gray-900">Process
+                                <label htmlFor="process-Date" className="block text-sm font-medium text-gray-900">Process
                                     Date</label>
                                 <div className="mt-2">
                                     <input
                                         type="date"
-                                        name="process-date"
-                                        id="process-date"
+                                        name="processDate"
+                                        id="process-Date"
                                         value={formData.processDate}
                                         onChange={handleInputChange}
+
                                         required
                                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
                                     />
                                 </div>
                             </div>
+
                             <div className="sm:col-span-3">
-                                <label htmlFor="process-quan" className="block text-sm font-medium text-gray-900">Process
-                                    Quantity
+                                <label htmlFor="ifStock-Material" className="block text-sm font-medium text-gray-900">Ithuru
+                                    Raw
+                                    Stock*
+
                                 </label>
                                 <div className="mt-2">
                                     <input
                                         type="number"
-                                        name="process-quan"
-                                        id="process-quan"
+                                        name="ifStockMaterial"
+                                        id="ifStock-Material"
+                                        value={formData.ifStockMaterial}
+                                        onChange={handleInputChange}
+                                        readOnly={true}
+                                        className={`block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 ${
+                                            formData.ifStockMaterial === "0" ? "outline-red-500 focus:outline-red-500 hover:outline-red-500    " : "outline-gray-300"
+                                        } placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm`}
+                                    />
+                                </div>
+                            </div>
+
+
+                            <div className="sm:col-span-3">
+                                <label htmlFor="processed-Quantity" className="block text-sm font-medium text-gray-900">Process*
+
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        type="number"
+                                        name="processedQuantity"
+                                        id="processed-Quantity"
                                         value={formData.processedQuantity}
                                         onChange={handleInputChange}
-                                        required
+                                        required={true}
                                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
                                     />
                                 </div>
                             </div>
 
+                            <div className="sm:col-span-3 flex items-center mt-4">
+                                <input
+                                    type="checkbox"
+                                    name="qualityChecks"
+                                    id="quality-Checks"
+                                    checked={formData.qualityChecks}
+                                    onChange={(e) => setFormData({...formData, qualityChecks: e.target.checked})}
+                                    className="h-5 w-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                                />
+                                <label htmlFor="quality-Checks" className="ml-2 text-sm font-medium text-gray-900">
+                                    Quality Check Passed
+                                </label>
+                            </div>
+
                         </div>
 
-
                         <div className="sm:col-span-3 mt-10">
-                            <label htmlFor="process-logs" className="block text-sm font-medium text-gray-900">Process
-                                logs*
+                            <label htmlFor="log-s" className="block text-sm font-medium text-gray-900">Process logs*
                             </label>
                             <div className="mt-2">
                                 <input
                                     type="text"
                                     name="logs"
-                                    id="process-logs"
+                                    id="log-s"
                                     value={formData.logs}
                                     onChange={handleInputChange}
                                     required
@@ -216,3 +263,5 @@ export function UpdateProduction({ isModalOpen, setIsModalOpen, onUpdate, produc
         )
     );
 }
+
+export default UpdateProduction

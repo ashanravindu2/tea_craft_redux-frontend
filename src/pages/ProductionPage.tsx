@@ -23,7 +23,7 @@ import {Production} from "../model/Production.ts";
 
 export function ProductionPage() {
 
-    const productions : Production[] = useSelector((state:  {production:Production[]} ) => state.production);
+     const productions : Production[] = useSelector((state:  {production:Production[]} ) => state.production);
 
     const productionHeaders = ['productionID', 'Quality status', 'processDate', 'processedQuantity','logs', 'Actions'];
     const dispatch = useDispatch<AppDispatch>();
@@ -93,11 +93,8 @@ export function ProductionPage() {
 
     }
 
-    useEffect(() => {
-        if (!productions || productions.length === 0) {
-            dispatch(getAllProductions());
-        }
-    }, [ dispatch]);
+
+
 
 
 
@@ -125,7 +122,11 @@ export function ProductionPage() {
         ));
     }
 
-
+    useEffect(() => {
+        if (!productions || productions.length === 0) {
+            dispatch(getAllProductions());
+        }
+    }, [dispatch]);
 
     return (
         <motion.div

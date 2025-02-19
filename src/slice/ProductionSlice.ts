@@ -1,7 +1,6 @@
 import {Production} from "../model/Production.ts";
 import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {deleteRawMaterial} from "./RawMaterialSlice.ts";
 
 const initialState : Production[] = [];
 
@@ -59,7 +58,7 @@ export const getAllProductions = createAsyncThunk(
 );
 
 const productionSlice = createSlice({
-    name: 'productions',
+    name: 'production',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -88,9 +87,7 @@ const productionSlice = createSlice({
         });
         builder
             .addCase(deleteProduction.fulfilled, (state, action) => {
-            const index = state.findIndex((production: Production) => production.productionID === action.payload.productionID);
-            state.slice(index, 1);
-            alert("Production deleted successfully");
+           return state.filter((production)=> production.productionID !== action.payload.productionID);
             })
             .addCase(deleteProduction.rejected, (state, action) => {
                 alert("Failed to delete production");

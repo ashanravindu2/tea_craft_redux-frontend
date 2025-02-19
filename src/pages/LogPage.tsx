@@ -6,7 +6,7 @@ import {useState} from "react";
 
 
 import toast from "react-hot-toast";
-import LogActions from "./LogActions.tsx";
+import LogActions from "../component/updateModel/LogActions.tsx";
 import DeleteModal from "../component/DeleteModal.tsx";
 import {Logs} from "../model/Logs.ts";
 import {deleteLog, saveLog, updateLog} from "../slice/LogsSlice.ts";

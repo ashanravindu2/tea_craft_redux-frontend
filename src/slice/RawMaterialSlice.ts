@@ -103,9 +103,7 @@ const rawMaterialSlice = createSlice({
             });
         builder
             .addCase(deleteRawMaterial.fulfilled, (state, action) => {
-                const index = state.findIndex((rawMaterial:RawMaterial) => rawMaterial.stockID === action.payload.stockID);
-                state.splice(index,1);
-                alert("Raw Material Deleted Successfully");
+                return state.filter((rawMaterial)=>rawMaterial.stockID !== action.payload.stockID);
             })
             .addCase(deleteRawMaterial.rejected, (state, action) => {
                 alert("Raw Material Delete Failed");

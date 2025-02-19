@@ -11,8 +11,7 @@ import {useEffect, useState} from "react";
 import {deleteEmployee, getAllEmployees, saveEmployee, updateEmployee} from "../slice/EmployeeSlice.ts";
 import {AppDispatch} from "../store/store.tsx";
 import toast from "react-hot-toast";
-import {Supplier} from "../model/Supplier.ts";
-import {getAllSuppliers} from "../slice/SupplierSlice.ts";
+
 
 
 
@@ -105,7 +104,6 @@ export function EmployeePage() {
             dispatch(getAllEmployees());
         }
     }, [dispatch]);
-
 
     return (
         <motion.div

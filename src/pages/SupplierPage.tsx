@@ -14,8 +14,11 @@ import {deleteSupplier, getAllSuppliers, saveSupplier, updateSupplier} from "../
 import {AppDispatch} from "../store/store.tsx";
 
 
+
+
 export function SupplierPage() {
     const supplierMember : Supplier[] = useSelector((state:  {supplier:Supplier[]} ) => state.supplier);
+
 
     const supplierHeaders = ['Code','Name', 'Email', 'Address', 'Contact No', 'Actions'];
     const dispatch = useDispatch<AppDispatch>();
@@ -64,6 +67,12 @@ export function SupplierPage() {
 
     }
 
+    useEffect(() => {
+        if (!supplierMember || supplierMember.length === 0) {
+            dispatch(getAllSuppliers());
+        }
+    }, [dispatch]);
+
     function handleDeleteSupplier(supplier:Supplier){
         toast.custom((t) => (
             <DeleteModal
@@ -86,11 +95,7 @@ export function SupplierPage() {
             />
         ));
     }
-    useEffect(() => {
-        if (!supplierMember || supplierMember.length === 0) {
-            dispatch(getAllSuppliers());
-        }
-    }, [dispatch]);
+
 
     return (
         <motion.div

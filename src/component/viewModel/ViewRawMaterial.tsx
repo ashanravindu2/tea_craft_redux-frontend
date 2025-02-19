@@ -2,6 +2,11 @@
 import {RawMaterial} from "../../model/RawMaterial.ts";
 import {motion} from "framer-motion";
 import {formatDate} from "../../util/util.ts";
+import {Supplier} from "../../model/Supplier.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {getAllSuppliers} from "../../slice/SupplierSlice.ts";
+import {AppDispatch} from "../../store/store.tsx";
 
 
 interface ViewMaterialProps {
@@ -11,6 +16,15 @@ interface ViewMaterialProps {
 }
 
  function ViewRawMaterial({ isOpenModal, setIsOpenModal, rawMaterial }: Readonly<ViewMaterialProps>) {
+     const supplierMember : Supplier[] = useSelector((state:  {supplier:Supplier[]} ) => state.supplier);
+     const dispatch = useDispatch<AppDispatch>();
+
+     useEffect(() => {
+         if (!supplierMember || supplierMember.length === 0) {
+             dispatch(getAllSuppliers());
+         }
+     }, [dispatch]);
+
     return (
         isOpenModal && (
 
@@ -65,18 +79,33 @@ interface ViewMaterialProps {
                                 />
                             </div>
                         </div>
-
-                        <div className="sm:col-span-3 py-5">
-                            <label htmlFor="supplierName" className="block text-sm font-medium text-gray-900">Supplier
-                                ID</label>
-                            <div className="mt-2">
-                                <input
-                                    type="text"
-                                    value={rawMaterial.supplierID}
-                                    readOnly={true}
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                />
+                        <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-10">
+                            <div className="sm:col-span-3 py-5">
+                                <label htmlFor="supplierName" className="block text-sm font-medium text-gray-900">Supplier
+                                    ID</label>
+                                <div className="mt-2">
+                                    <input
+                                        type="text"
+                                        value={rawMaterial.supplierID}
+                                        readOnly={true}
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                    />
+                                </div>
                             </div>
+                            <div className="sm:col-span-3 py-5">
+                                <label htmlFor="supplierName" className="block text-sm font-medium text-gray-900">Supplier
+                                    Name</label>
+                                <div className="mt-2">
+                                    <input
+                                        type="text"
+                                        value={supplierMember.find((supplier) => supplier.supplierID === rawMaterial.supplierID)?.firstName +" "+ supplierMember.find((supplier) => supplier.supplierID === rawMaterial.supplierID)?.lastName}
+                                        readOnly={true}
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                    />
+                                </div>
+                            </div>
+
+
                         </div>
 
                         <div className="sm:col-span-3 py-5">
@@ -90,40 +119,41 @@ interface ViewMaterialProps {
                                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
                                 />
                             </div>
-                        </div>
+                            </div>
 
 
-                        <div className="sm:col-span-3 py-5">
-                            <label htmlFor="dateReceived" className="block text-sm font-medium text-gray-900">Date of
-                                Received</label>
-                            <div className="mt-2">
-                                <input
-                                    type="date"
-                                    value={formatDate(rawMaterial.dateReceived)}
-                                    readOnly={true}
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                />
+                            <div className="sm:col-span-3 py-5">
+                                <label htmlFor="dateReceived" className="block text-sm font-medium text-gray-900">Date
+                                    of
+                                    Received</label>
+                                <div className="mt-2">
+                                    <input
+                                        type="date"
+                                        value={formatDate(rawMaterial.dateReceived)}
+                                        readOnly={true}
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 font-semibold ">
-                        <div className="sm:col-span-6">
-                            <div className="mt-2">
-                                <button
-                                    onClick={() => setIsOpenModal(false)}
-                                    className="bg-gray-300 w-full rounded-lg py-2 px-4 text-black hover:bg-gray-400 focus:outline-none "
-                                >
-                                    Close
-                                </button>
+                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 font-semibold ">
+                            <div className="sm:col-span-6">
+                                <div className="mt-2">
+                                    <button
+                                        onClick={() => setIsOpenModal(false)}
+                                        className="bg-gray-300 w-full rounded-lg py-2 px-4 text-black hover:bg-gray-400 focus:outline-none "
+                                    >
+                                        Close
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </motion.div>
             </motion.div>
-        )
+ )
 
 
-    );
+ );
  }
 
 

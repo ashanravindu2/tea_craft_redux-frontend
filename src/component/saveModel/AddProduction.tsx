@@ -39,21 +39,23 @@ function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProd
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
 
-
         if (name === "processDate") {
-            console.log("Date",value);
-            setFormData({ ...formData, processDate: value });
+            console.log("Date", value);
+
             const totalQuantity = rawMaterials
                 .filter((stock) => {
                     const formattedDate = new Date(stock.dateReceived).toISOString().split("T")[0];
-                    return formattedDate === value; // Filter by the specific date
+                    return formattedDate === value;
                 })
-                .reduce((sum, stock) => {
-                    return sum + parseFloat(String(stock.quantityInKg)); // Sum up the quantityInKg (ensure it's treated as a number)
-                }, 0); // Initialize sum as 0
+                .reduce((sum, stock) => sum + parseFloat(String(stock.quantityInKg)), 0);
 
-            console.log("Total Quantity",totalQuantity);
-            setFormData({ ...formData, ifStockMaterial: String(totalQuantity) })
+            console.log("Total Quantity", totalQuantity);
+
+            setFormData((prev) => ({
+                ...prev,
+                processDate: value,
+                ifStockMaterial: String(totalQuantity),
+            }));
         }
 
         if (name == "processedQuantity"){
@@ -151,8 +153,8 @@ function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProd
 
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="process-Date" className="block text-sm font-medium text-gray-900">Process
-                                    Date</label>
+                                <label htmlFor="process-Date" className="block text-sm font-medium text-gray-900">
+                                    Date If Stock*</label>
                                 <div className="mt-2">
                                     <input
                                         type="date"
@@ -168,9 +170,9 @@ function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProd
                             </div>
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="ifStock-Material" className="block text-sm font-medium text-gray-900">Ithuru
+                                <label htmlFor="ifStock-Material" className="block text-sm font-medium text-gray-900">Daily
                                     Raw
-                                    Stock*
+                                    Stock KG*
 
                                 </label>
                                 <div className="mt-2">
@@ -190,7 +192,7 @@ function AddProduction({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddProd
 
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="processed-Quantity" className="block text-sm font-medium text-gray-900">Process*
+                                <label htmlFor="processed-Quantity" className="block text-sm font-medium text-gray-900">Process Stock KG *
 
                                 </label>
                                 <div className="mt-2">

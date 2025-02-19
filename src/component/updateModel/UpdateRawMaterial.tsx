@@ -7,6 +7,7 @@ import {Supplier} from "../../model/Supplier.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../store/store.tsx";
 import {getAllSuppliers} from "../../slice/SupplierSlice.ts";
+import {formatDate} from "../../util/util.ts";
 
 
 interface UpdateModalProps{
@@ -19,29 +20,27 @@ interface UpdateModalProps{
 
 
      const supplierMember : Supplier[] = useSelector((state:  {supplier:Supplier[]} ) => state.supplier);
-
-     // getAllSuppliers
-
      const dispatch = useDispatch<AppDispatch>();  // A hook to access the dispatch function from the Redux store
 
      useEffect(() => {
-         dispatch(getAllSuppliers());
+         if (!supplierMember || supplierMember.length === 0) {
+             dispatch(getAllSuppliers());
+         }
+
      }, [dispatch]);
 
-    const [formData, setFormData] = useState({
 
-        stockID: rawMaterial.stockID,
+     const [formData, setFormData] = useState({
         supplierID: rawMaterial.supplierID,
         quantityInKg: rawMaterial.quantityInKg,
-        dateReceived: rawMaterial.dateReceived
+        dateReceived: rawMaterial.dateReceived,
     });
 
      useEffect(() => {
             setFormData({
-                stockID: rawMaterial.stockID,
                 supplierID: rawMaterial.supplierID,
                 quantityInKg: rawMaterial.quantityInKg,
-                dateReceived: rawMaterial.dateReceived.toString()
+                dateReceived: rawMaterial.dateReceived
             });
      }, [isModalOpen]);
 
@@ -51,13 +50,17 @@ interface UpdateModalProps{
      }
 
      function handleUpdate() {
+
+         console.log("Raw Materiawwwwl",rawMaterial);
+
          const updatesMaterial = {
              ...rawMaterial,
              supplierID: rawMaterial.supplierID,
-             quantityInKg: rawMaterial.quantityInKg,
-             dateReceived: rawMaterial.dateReceived,
+             quantityInKg: Number(formData.quantityInKg),
+             dateReceived: new Date(formData.dateReceived),
 
          };
+         console.log("Update",updatesMaterial);
          onUpdate(updatesMaterial);
          setIsModalOpen(false);
      }
@@ -108,21 +111,16 @@ interface UpdateModalProps{
                             <label htmlFor="supplierID" className="block text-sm font-medium text-gray-900">Supplier
                                 ID</label>
                             <div className="mt-2">
-                                <select
+                                <input
+                                    type="text"
                                     name="supplierID"
                                     id="supplierID"
                                     value={formData.supplierID}
-                                    onChange={handleInputChange}
-                                    required
+                                    readOnly={true}
                                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
-                                >
-                                    <option value="" disabled>Select Supplier</option>
-                                    {supplierMember.map((supplier) => (
-                                        <option value={supplier.supplierID}>{supplier.supplierID}
-                                        </option>
-                                    ))}
-                                </select>
+                                />
                             </div>
+
                         </div>
 
                         <div className="sm:col-span-3 py-5">
@@ -133,22 +131,21 @@ interface UpdateModalProps{
                                     type="text"
                                     name="supplierName"
                                     id="supplierName"
-                                    disabled={true}
-                                    onChange={handleInputChange}
-                                    required
+                                    value={supplierMember.find((supplier) => supplier.supplierID === formData.supplierID)?.firstName + " " + supplierMember.find((supplier) => supplier.supplierID === formData.supplierID)?.lastName}
+                                    readOnly={true}
                                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
                                 />
                             </div>
                         </div>
 
                         <div className="sm:col-span-3 py-5">
-                            <label htmlFor="quantityInKg" className="block text-sm font-medium text-gray-900">Quantity
+                            <label htmlFor="quantityIn-Kg" className="block text-sm font-medium text-gray-900">Quantity
                                 /KG</label>
                             <div className="mt-2">
                                 <input
                                     type="number"
                                     name="quantityInKg"
-                                    id="quantityInKg"
+                                    id="quantityIn-Kg"
                                     value={formData.quantityInKg}
                                     onChange={handleInputChange}
                                     required
@@ -157,15 +154,31 @@ interface UpdateModalProps{
                             </div>
                         </div>
 
+                        <div className="sm:col-span-3 py-5">
+                            <label htmlFor="quantityIn-Kg" className="block text-sm font-medium text-gray-900">Current Received Date
+                                </label>
+                            <div className="mt-2">
+                                <input
+                                    type="text"
+                                    name="quantityInKg"
+                                    id="quantityIn-Kg"
+                                    value={formatDate(formData.dateReceived)}
+                                    readOnly={true}
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
+                                />
+                            </div>
+                        </div>
+
 
                         <div className="sm:col-span-3 py-5">
-                            <label htmlFor="dateReceived" className="block text-sm font-medium text-gray-900">Date of
+                            <label htmlFor="date-Received" className="block text-sm font-medium text-gray-900"> Change
+                                Date of
                                 Received</label>
                             <div className="mt-2">
                                 <input
                                     type="date"
                                     name="dateReceived"
-                                    id="dateReceived"
+                                    id="date-Received"
                                     value={formData.dateReceived.toString()}
                                     onChange={handleInputChange}
                                     required
