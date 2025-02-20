@@ -20,6 +20,7 @@ function AddLog({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddLogProps>) 
     const employeeMember : Employee[] = useSelector((state:  {employee:Employee[]} ) => state.employee);
 
     const [formData, setFormData] = useState({
+
         supplierID: '',
         employeeID: '',
         productionID : '',

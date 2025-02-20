@@ -58,7 +58,7 @@ export const getAllLogs  = createAsyncThunk(
             return console.log('error',error)
         }
     }
-)
+);
 const logsSlice = createSlice({
     name: 'log',
     initialState,
@@ -89,7 +89,7 @@ const logsSlice = createSlice({
             });
         builder
             .addCase(deleteLog.fulfilled, (state, action) => {
-                const index = state.findIndex((logs: Logs)=>logs.logCode === action.payload);
+                const index = state.findIndex((logs: Logs)=>logs.logCode === action.payload.logCode);
                 state.slice(index,1);
                 alert("Logs Deleted Successfully")
             })

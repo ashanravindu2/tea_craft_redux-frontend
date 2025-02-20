@@ -6,7 +6,7 @@ import {UserAdmin} from "../model/UserAdmin.ts";
 const initialState = {
     jwt_token: null,
     refresh_token : null,
-    username: null,
+    email: null,
     isAuthenticated: false,
     loading: false,
     error: '',
@@ -53,7 +53,14 @@ const userSlice = createSlice({
                 console.log('Hello World');
             })
             .addCase(registerUser.fulfilled,(state, action)=>{
-                console.log('User Registered Successfully');
+
+                state.loading = false;
+                state.isAuthenticated = true;
+                state.jwt_token = action.payload.accessToken;
+                state.refresh_token = action.payload.refreshToken;
+                state.email = action.payload.email;
+
+
             })
             .addCase(registerUser.rejected,(state, action)=>{
                 state.error = action.payload as string;

@@ -1,8 +1,9 @@
 
-import {Outlet} from "react-router-dom";
+import {Navigate, Outlet} from "react-router-dom";
 import Navigation from "./Navigation.tsx";
 
 import {Header} from "./Header.tsx";
+import {useSelector} from "react-redux";
 
 
 
@@ -10,7 +11,12 @@ export function RootLayout() {
     const userFullName = "John Doe";
     const userRole = "Role";
 
+    const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
 
+
+    if (!isAuthenticated) {
+        return <Navigate to="/signIn" replace/>;
+    }
 
 
     return (

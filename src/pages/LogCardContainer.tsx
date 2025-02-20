@@ -1,26 +1,27 @@
+import { Logs } from "../model/Logs.ts";
 
-import {Logs} from "../model/Logs.ts";
+import { Base64 } from 'js-base64';
+
 
 interface LogCardContainerProps {
-    logs: Logs[];
     onCardClick: (logs: Logs) => void;
+    logs: Logs[];
 }
 
-function LogCardContainer({ logs, onCardClick } : Readonly<LogCardContainerProps>) {
+function LogCardContainer({ logs,onCardClick }: Readonly<LogCardContainerProps>) {
+
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 " id="logContainer">
             {logs.map((log, index) => (
                 <div
                     key={index}
-                    className="bg-white  border border-gray-200 rounded-xl h-96 shadow-lg hover:shadow-xl transition-shadow cursor-pointer flex flex-col"
+                    className="bg-white bg-green-200 border border-gray-200 rounded-xl h-96 shadow-lg hover:shadow-xl transition-shadow cursor-pointer flex flex-col"
                     onClick={() => onCardClick(log)}
                 >
-
                     {log.observedImage && (
-
                         <img
-                            src={URL.createObjectURL(new Blob([log.observedImage]))}
+                            src={log.observedImage}
                             alt="Observation"
                             className="w-full h-40 object-cover rounded-t-xl"
                         />

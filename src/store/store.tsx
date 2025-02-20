@@ -14,7 +14,7 @@ export const store = configureStore({
         supplier: supplierSlice,
         rawMaterial: rawMaterialSlice,
         production: productionSlice,
-        logs: logsSlice,
+        logs : logsSlice
 
     },
     middleware: (getDefaultMiddleware) =>

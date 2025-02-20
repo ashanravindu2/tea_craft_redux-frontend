@@ -2,20 +2,35 @@ import {motion} from "framer-motion";
 import {useDispatch, useSelector} from "react-redux";
 
 import LogCardContainer from "./LogCardContainer.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 import toast from "react-hot-toast";
 import LogActions from "../component/updateModel/LogActions.tsx";
 import DeleteModal from "../component/DeleteModal.tsx";
 import {Logs} from "../model/Logs.ts";
-import {deleteLog, saveLog, updateLog} from "../slice/LogsSlice.ts";
-import {RootState} from "../store/store.tsx";
+import {deleteLog, getAllLogs, saveLog, updateLog} from "../slice/LogsSlice.ts";
 import AddLog from "../component/saveModel/AddLog.tsx";
+import {getAllRawMaterials} from "../slice/RawMaterialSlice.ts";
+
 
 function LogPage() {
-    const logs : Logs[] = useSelector((state: RootState) => state.logs);
+   // const logz : Logs[] = useSelector((state:  {log:Logs[]} ) => state.log);
     const dispatch = useDispatch();
+
+    const logz = useSelector(state => state.logs);
+    console.log("Redux State:", logz);
+
+
+    useEffect(() => {
+        if (!logz || logz.length === 0) {
+            dispatch(getAllLogs());
+        }
+
+    }, [dispatch]);
+
+
+
     const [selectedField, setIsSelectedField] = useState<Logs | null>(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isActionModalOpen, setIsActionModalOpen] = useState(false);
@@ -92,11 +107,11 @@ function LogPage() {
                 </div>
                <div className={'h-[70vh] overflow-y-scroll custom-scrollbar'}>
                    <LogCardContainer
-                       logs={logs}
+                       logs={logz}
                        onCardClick={openLogActionsModal}
                    />
                </div>
-                {/*modal for add log*/}
+                modal for add log
                 <AddLog
                     isModalOpen={isAddModalOpen}
                     setIsModalOpen={setIsAddModalOpen}
