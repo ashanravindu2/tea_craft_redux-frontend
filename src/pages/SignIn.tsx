@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../store/store.tsx";
+import {AppDispatch, RootState} from "../store/store.tsx";
 import {loginUser} from "../slice/user-slice.ts";
 import { useNavigate } from "react-router";
 import image from "../assets/img/signin Img.png";
@@ -10,8 +10,11 @@ import {motion} from "framer-motion";
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const
-        isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
+
+    const registrationSuccess = useSelector(
+        (state: RootState) => state.userReducer.isAuthenticated
+    );
+
 
     const [formData, setFormData] = useState({
         email: "",
@@ -35,17 +38,17 @@ const SignUp = () => {
             e.preventDefault();
             const user: { password: string; email: string } = { email: formData.email, password: formData.password };
             dispatch(loginUser(user));
+
         }
 
 
     };
 
     useEffect(() => {
-        if (isAuthenticated) {
-            console.log("User is authenticated, redirecting to home page...");
+        if (registrationSuccess) {
             navigate("/home");
         }
-    }, [isAuthenticated, navigate]);
+    }, [registrationSuccess, navigate]);
 
     return (
         <motion.div

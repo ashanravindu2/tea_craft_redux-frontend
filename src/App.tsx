@@ -8,7 +8,7 @@ import {Error} from "./component/Error.tsx";
 import {EmployeePage} from "./pages/EmployeePage.tsx";
 import {SupplierPage} from "./pages/SupplierPage.tsx";
 import {RowMaterialPage} from "./pages/RowMaterialPage.tsx";
-import {Provider, useSelector} from "react-redux";
+import {Provider} from "react-redux";
 import {store} from "./store/store.tsx";
 import {ProductionPage} from "./pages/ProductionPage.tsx";
 
@@ -28,15 +28,12 @@ function App() {
     const routes = createBrowserRouter([
         {
             path: '/signUp',
-            element: <SignUp/>, // Set SignUp as the default page
+            element: <SignUp/>,
         },
         {
             path: '/signIn',
             element:<SignIn/>
         },
-
-
-
 
         {
             path: '',

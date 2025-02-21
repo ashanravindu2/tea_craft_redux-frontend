@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../store/store.tsx";
+import {AppDispatch, RootState} from "../store/store.tsx";
 import { UserAdmin } from "../model/UserAdmin.ts";
 import { registerUser } from "../slice/user-slice.ts";
 import { useNavigate } from "react-router";
@@ -11,7 +11,10 @@ import {motion} from "framer-motion";
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
+    // ✅ Get registration success state from Redux
+    const registrationSuccess = useSelector(
+        (state: RootState) => state.userReducer.isAuthenticated
+    );
 
     const [formData, setFormData] = useState({
         email: "",
@@ -36,14 +39,14 @@ const SignUp = () => {
         }
         const user: UserAdmin = { email: formData.email, password: formData.password, role: formData.role };
         dispatch(registerUser(user));
-    };
 
+
+    };
     useEffect(() => {
-        if (isAuthenticated) {
-            console.log("User is authenticated, redirecting to home page...");
-            navigate("/home");
+        if (registrationSuccess) {
+            navigate("/signIn");
         }
-    }, [isAuthenticated, navigate]);
+    }, [registrationSuccess, navigate]);
 
     return (
 

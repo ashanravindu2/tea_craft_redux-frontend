@@ -21,7 +21,6 @@ export const registerUser= createAsyncThunk(
     async (user : UserAdmin)=>{
         try{
             const response = await api.post('/auth/register', {user},{withCredentials: true});
-
             return response.data;
 
 
