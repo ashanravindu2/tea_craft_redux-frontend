@@ -40,7 +40,22 @@ export function SupplierPage() {
 
     function handleAddSupplier(newSupplier: Supplier) {
 
-       
+        const accessToken = localStorage.getItem("accessToken"); // Retrieve token
+
+        if (!accessToken) {
+            alert("No access token found. Please log in.");
+            return;
+        }
+
+        dispatch(saveSupplier(newSupplier))
+            .unwrap()
+            .then(() => {
+                setIsModalOpen(false);
+                toast.success("Supplier saved successfully");
+            })
+            .catch((error) => {
+                toast.error(`Error: ${error.message || "Failed to save supplier"}`);
+            });
     }
 
     function handleViewSupllier(supplier:Supplier) {

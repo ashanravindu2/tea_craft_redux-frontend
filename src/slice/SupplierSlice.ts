@@ -11,7 +11,28 @@ const api = axios.create({
 });
 
 export const saveSupplier = createAsyncThunk(
+    'supplier/saveSupplier',
+    async (supplier: Supplier, { rejectWithValue }) => {
+        try {
+            const accessToken = localStorage.getItem("accessToken");
 
+            if (!accessToken) {
+                throw new Error("No access token found. Please log in.");
+            }
+
+            const response = await api.post('/add', supplier, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`, // Attach token to headers
+                    "Content-Type": "application/json",
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error('Error saving supplier:', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
+        }
+    }
 );
 
 

@@ -38,7 +38,9 @@ export const loginUser= createAsyncThunk(
         try{
             const response = await api.post('/auth/login', {user},{withCredentials: true});
 
-
+            //response refresh token and access token set to local storage
+            localStorage.setItem('accessToken', response.data.accessToken);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
             return response.data;
 
 
