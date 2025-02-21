@@ -41,7 +41,7 @@ const SignUp = () => {
     useEffect(() => {
         if (isAuthenticated) {
             console.log("User is authenticated, redirecting to home page...");
-            navigate("/home");
+            navigate("/signIn");
         }
     }, [isAuthenticated, navigate]);
 
