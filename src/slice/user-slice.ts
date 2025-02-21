@@ -21,7 +21,10 @@ export const registerUser= createAsyncThunk(
     async (user : UserAdmin)=>{
         try{
             const response = await api.post('/auth/register', {user},{withCredentials: true});
+
             return response.data;
+
+
         }catch(err){
             console.log(err);
         }
@@ -29,11 +32,16 @@ export const registerUser= createAsyncThunk(
 )
 
 export const loginUser= createAsyncThunk(
+
     'user/login',
     async (user : UserAdmin)=>{
         try{
             const response = await api.post('/auth/login', {user},{withCredentials: true});
+
+
             return response.data;
+
+
         }catch(err){
             console.log(err);
         }

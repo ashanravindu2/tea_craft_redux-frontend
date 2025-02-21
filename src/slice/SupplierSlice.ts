@@ -10,18 +10,10 @@ const api = axios.create({
     baseURL: "http://localhost:3000/supplier"
 });
 
-export const saveSupplier = createAsyncThunk (
-    'supplier/saveSupplier',
-    async (supplier:Supplier)=>{
-        console.log("Slice",supplier);
-        try {
-            const response = await api.post('/add',supplier);
-            return response.data;
-        }catch (error){
-            return console.log('error',error)
-        }
-    }
+export const saveSupplier = createAsyncThunk(
+
 );
+
 
 export const updateSupplier = createAsyncThunk(
     'supplier/updateSupplier',

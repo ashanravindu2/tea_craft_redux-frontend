@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store.tsx";
-import { UserAdmin } from "../model/UserAdmin.ts";
-import { registerUser } from "../slice/user-slice.ts";
+import {loginUser} from "../slice/user-slice.ts";
 import { useNavigate } from "react-router";
 import image from "../assets/img/signin Img.png";
 import logo from "../assets/icons/logoIcon.png"
@@ -11,13 +10,14 @@ import {motion} from "framer-motion";
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
+    const
+        isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
 
     const [formData, setFormData] = useState({
         email: "",
+        confirmPass : "",
         password: "",
-        role: "",
-        agreed: false,
+
     });
 
     const handleChange = (e) => {
@@ -29,13 +29,15 @@ const SignUp = () => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!formData.agreed) {
-            alert("Please agree to the terms before signing up.");
-            return;
+        if(formData.confirmPass != formData.password){
+            alert("PASSWORD ERROR")
+        }else {
+            e.preventDefault();
+            const user: { password: string; email: string } = { email: formData.email, password: formData.password };
+            dispatch(loginUser(user));
         }
-        const user: UserAdmin = { email: formData.email, password: formData.password, role: formData.role };
-        dispatch(registerUser(user));
+
+
     };
 
     useEffect(() => {
@@ -116,8 +118,8 @@ const SignUp = () => {
                                 <label className="block text-gray-700 font-semibold mb-1">Confirm Password</label>
                                 <input
                                     type="password"
-                                    name="password"
-                                    value={formData.password}
+                                    name="confirmPass"
+                                    value={formData.confirmPass}
                                     onChange={handleChange}
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                                     required

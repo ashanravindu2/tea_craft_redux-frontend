@@ -39,9 +39,8 @@ export function SupplierPage() {
     );
 
     function handleAddSupplier(newSupplier: Supplier) {
-        dispatch( saveSupplier(newSupplier));
-        setIsModalOpen(false);
-        toast.success('Supplier saved successfully');
+
+       
     }
 
     function handleViewSupllier(supplier:Supplier) {
