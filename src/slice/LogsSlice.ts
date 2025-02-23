@@ -3,6 +3,7 @@ import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {Logs} from "../model/Logs.ts";
 import toast from "react-hot-toast";
+import {RootState} from "../store/store.tsx";
 
 
 const initialState:Logs[]=[];
@@ -11,57 +12,114 @@ const  api = axios.create({
     baseURL: "http://localhost:3000/log"
 });
 
-
-export const saveLog  = createAsyncThunk(
+export const saveLog = createAsyncThunk(
     'log/saveLog',
-    async (logs:Logs)=>{
-        console.log("Slice",logs);
+    async (logs: Logs, { getState, rejectWithValue }) => {
         try {
-            const response = await api.post('/add',logs);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to save log");
+                return rejectWithValue("Please log in to save log");
+            }
+
+            const response = await api.post('/add', logs, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
-export const updateLog  = createAsyncThunk(
+export const updateLog = createAsyncThunk(
     'log/updateLog',
-    async (logs:Logs)=>{
+    async (logs: Logs, { getState, rejectWithValue }) => {
         try {
-            const response = await api.put(`/update/${logs.logCode}`,logs);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to update log");
+                return rejectWithValue("Please log in to update log");
+            }
+
+            const response = await api.put(`/update/${logs.logCode}`, logs, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
-export const deleteLog   = createAsyncThunk(
+export const deleteLog = createAsyncThunk(
     'log/removeLog',
-    async (logCode:string)=>{
+    async (logCode: string, { getState, rejectWithValue }) => {
         try {
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
 
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",logCode);
-            const response = await api.delete(`/remove/${logCode}`);
+            if (!token) {
+                alert("Please log in to delete log");
+                return rejectWithValue("Please log in to delete log");
+            }
+
+            console.log("Log Code", logCode);
+            const response = await api.delete(`/remove/${logCode}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
-export const getAllLogs  = createAsyncThunk(
+export const getAllLogs = createAsyncThunk(
     'log/getAllLogs',
-    async ()=>{
+    async (_, { getState, rejectWithValue }) => {
         try {
-            const response = await api.get('/all');
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to view logs");
+                return rejectWithValue("Please log in to view logs");
+            }
+
+            const response = await api.get('/all', {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
+
+
+
+
 const logsSlice = createSlice({
     name: 'log',
     initialState,

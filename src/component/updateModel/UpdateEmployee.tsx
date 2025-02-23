@@ -241,7 +241,7 @@ function UpdateEmployee({ isModalOpen, setIsModalOpen, onUpdate, employee}: Read
                                         id="email"
                                         value={formData.email}
                                         onChange={handleInputChange}
-                                        required
+                                        readOnly={true}
                                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-2 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 hover:outline-green-500 sm:text-sm"
                                     />
                                 </div>

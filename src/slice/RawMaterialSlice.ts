@@ -1,6 +1,7 @@
 import {RawMaterial} from "../model/RawMaterial.ts";
 import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {RootState} from "../store/store.tsx";
 
 const initialState:RawMaterial[]=[];
 
@@ -10,67 +11,137 @@ const  api = axios.create({
 
 export const saveRawMaterial = createAsyncThunk(
     'rawMaterial/saveRawMaterial',
-    async (rawMaterial:RawMaterial)=>{
-        console.log("Slice",rawMaterial);
+    async (rawMaterial: RawMaterial, { getState, rejectWithValue }) => {
         try {
-            const response = await api.post('/add',rawMaterial);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to save raw material");
+                return rejectWithValue("Please log in to save raw material");
+            }
+
+            const response = await api.post('/add', rawMaterial, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
 export const updateRawMaterial = createAsyncThunk(
     'rawMaterial/updateRawMaterial',
-    async (rawMaterial:RawMaterial)=>{
+    async (rawMaterial: RawMaterial, { getState, rejectWithValue }) => {
         try {
-            const response = await api.put(`/update/${rawMaterial.stockID}`,rawMaterial);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to update raw material");
+                return rejectWithValue("Please log in to update raw material");
+            }
+
+            const response = await api.put(`/update/${rawMaterial.stockID}`, rawMaterial, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
 export const deleteRawMaterial = createAsyncThunk(
     'rawMaterial/removeRawMaterial',
-    async (id:string)=>{
+    async (id: string, { getState, rejectWithValue }) => {
         try {
-            const response = await api.delete(`/remove/${id}`);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to delete raw material");
+                return rejectWithValue("Please log in to delete raw material");
+            }
+
+            const response = await api.delete(`/remove/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
 export const getAllRawMaterials = createAsyncThunk(
     'rawMaterial/getAllRawMaterials',
-    async ()=>{
+    async (_, { getState, rejectWithValue }) => {
         try {
-            const response = await api.get('/all');
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to view raw materials");
+                return rejectWithValue("Please log in to view raw materials");
+            }
+
+            const response = await api.get('/all', {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
 export const getAlLStockifDate = createAsyncThunk(
     'rawMaterial/getAllStockifDate',
-        async (date:string)=>{
-            try {
-                const response = await api.get(`/getStock/${date}`);
-                console.log("Slice",response.data,"date",date);
-                return response.data;
-            }catch (error){
-                return console.log('error',error)
+    async (date: string, { getState, rejectWithValue }) => {
+        try {
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to view stock");
+                return rejectWithValue("Please log in to view stock");
+            }
+
+            const response = await api.get(`/getStock/${date}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
+            console.log("Slice", response.data, "date", date);
+            return response.data;
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
-export
+
+
 
 
 const rawMaterialSlice = createSlice({

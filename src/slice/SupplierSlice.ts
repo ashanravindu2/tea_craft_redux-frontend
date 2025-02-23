@@ -1,6 +1,7 @@
 import {Supplier} from "../model/Supplier.ts";
 import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {RootState} from "../store/store.tsx";
 
 
 
@@ -12,64 +13,106 @@ const api = axios.create({
 
 export const saveSupplier = createAsyncThunk(
     'supplier/saveSupplier',
-    async (supplier: Supplier, { rejectWithValue }) => {
+  async (supplier: Supplier, { getState, rejectWithValue }) => {
         try {
-            const accessToken = localStorage.getItem("accessToken");
-            if (!accessToken) {
-                throw new Error("No access token found. Please log in.");
-            }
+            const state = getState() as RootState// ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token correctly
+
 
             const response = await api.post('/add', supplier, {
                 headers: {
-                    authorization: `Bearer ${accessToken}`, // Attach token to headers
-                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // Include the token in the headers
+                },
+            });
+
+            alert("3  "+ response.data);
+            return response.data;
+        } catch (error: any) {
+            return console.log('error',error)
+        }
+    }
+);
+
+export const updateSupplier = createAsyncThunk(
+    'supplier/updateSupplier',
+    async (supplier: Supplier, { getState, rejectWithValue }) => {
+        try {
+            const state = getState() as RootState;
+            const token = state.userReducer.jwt_token;
+
+            if (!token) {
+                alert("4");
+                return rejectWithValue("5");
+            }
+
+            const response = await api.put(`/update/${supplier.supplierID}`, supplier, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
             return response.data;
         } catch (error) {
-            console.error('Error saving supplier:', error);
+            console.error('6:', error);
             return rejectWithValue(error.response?.data || "An error occurred");
-        }
-    }
-);
-
-
-export const updateSupplier = createAsyncThunk(
-    'supplier/updateSupplier',
-    async (supplier:Supplier)=>{
-        try {
-            const response = await api.put(`/update/${supplier.supplierID}`,supplier);
-            return response.data;
-        }catch (error){
-            return console.log('error',error)
         }
     }
 );
 
 export const deleteSupplier = createAsyncThunk(
     'supplier/removeSupplier',
-    async (id:string)=>{
+    async (id: string, { getState, rejectWithValue }) => {
         try {
-            const response = await api.delete(`/remove/${id}`);
+            const state = getState() as RootState;
+            const token = state.userReducer.jwt_token;
+
+            if (!token) {
+                alert("7");
+                return rejectWithValue("8");
+            }
+
+            const response = await api.delete(`/remove/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error) {
+            console.error('9:', error);
+            return rejectWithValue(error.response?.data || "10");
         }
     }
 );
 
 export const getAllSuppliers = createAsyncThunk(
     'supplier/getAllSuppliers',
-    async ()=>{
+    async (_, { getState, rejectWithValue ,}) => {
         try {
-            const response = await api.get('/all');
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token;
+
+            if (!token) {
+                alert("12");
+                return rejectWithValue("11");
+            }
+
+            const response = await api.get('/all', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error) {
+            if (error.response?.status === 401) {
+                alert("13");
+            }
         }
     }
-)
+);
+
 
 const supplierSlice = createSlice({
     name: 'supplier',

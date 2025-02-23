@@ -1,9 +1,9 @@
-import { Logs } from "../model/Logs.ts";
-import {Production} from "../model/Production.ts";
+import { Logs } from "../../model/Logs.ts";
+import {Production} from "../../model/Production.ts";
 import {useSelector} from "react-redux";
-import {RootState} from "../store/store.tsx";
-import {Supplier} from "../model/Supplier.ts";
-import {Employee} from "../model/Employee.ts";
+import {RootState} from "../../store/store.tsx";
+import {Supplier} from "../../model/Supplier.ts";
+import {Employee} from "../../model/Employee.ts";
 
 
 

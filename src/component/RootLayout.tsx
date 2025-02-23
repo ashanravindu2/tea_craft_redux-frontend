@@ -4,20 +4,21 @@ import Navigation from "./Navigation.tsx";
 
 import {Header} from "./Header.tsx";
 import {useSelector} from "react-redux";
+import {RootState} from "../store/store.tsx";
 
 
 
 export function RootLayout() {
-    const userFullName = "John Doe";
-    const userRole = "Role";
-    //
-    // const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
-    //
-    //
-    // if (!isAuthenticated) {
-    //     return <Navigate to="/signIn" replace/>;
-    // }
 
+    const userFullName = "Ashan"; // Adjust this if needed
+    const userRole = "Admin"; // Adjust this if needed
+
+    const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
+
+
+    if (!isAuthenticated) {
+        return <Navigate to="/signIn" replace/>;
+    }
 
     return (
         <div className="flex h-screen">

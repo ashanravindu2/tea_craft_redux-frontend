@@ -38,6 +38,31 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
         console.log("aaaaa",name==="joinedDate",name,value);
     }
 
+    //clearFeild
+
+    function clearFeild(){
+        setFormData({
+            firstName: "",
+            lastName: "",
+            designation: "",
+            joinedDate: "",
+            gender: "",
+            dob: "",
+            contactNumber: "",
+            email: "",
+            streetAddress: "",
+            addressLine2: "",
+            country: "",
+            province: "",
+            city: "",
+            postalCode: "",
+
+        }
+        );
+    }
+
+
+
 
 
     const handleSave = () => {
@@ -68,6 +93,7 @@ function AddEmployee({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddEmploy
 
         console.log("Add",newEmployees);
         onSave(newEmployees);
+        clearFeild();
         setIsModalOpen(false);
 
     }

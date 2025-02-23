@@ -3,7 +3,7 @@ import {Employee} from "../model/Employee.ts";
 import  axios from "axios";
 import {RootState} from "../store/store.tsx";
 import toast from "react-hot-toast";
-import {refreshAuthToken} from "./auth-user-slice.ts";
+
 
 
 
@@ -19,6 +19,7 @@ export const saveEmployee = createAsyncThunk(
     async (employee: Employee, { getState, rejectWithValue }) => { // ✅ Use getState to access Redux state
         try {
             const state = getState() as RootState; // ✅ Get state
+            console.log("saveEmployee State", state);
             const token = state.userReducer.jwt_token; // ✅ Access JWT token correctly
 
             console.log("saveEmployee Token", token);
@@ -45,24 +46,53 @@ export const saveEmployee = createAsyncThunk(
 
 export const updateEmployee = createAsyncThunk(
     'employee/updateEmployee',
-    async (employee:Employee)=>{
+    async (employee: Employee, { getState, rejectWithValue }) => { // ✅ Use getState to access Redux state
         try {
-            const response = await api.put(`/update/${employee.employeeID}`,employee);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token correctly
+
+            console.log("updateEmployee Token", token);
+
+            if (!token) {
+                alert("Please log in to update employee");
+                return rejectWithValue("Please log in to update employee");
+            }
+
+            const response = await api.put(`/update/${employee.employeeID}`, employee, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the headers
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            return console.log('error', error);
         }
     }
 );
-
 export const deleteEmployee = createAsyncThunk(
     'employee/removeEmployee',
-    async (id:string)=>{
+    async (id: string, { getState, rejectWithValue }) => { // ✅ Use getState to access Redux state
         try {
-            const response = await api.delete(`/remove/${id}`);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token correctly
+
+            console.log("deleteEmployee Token", token);
+
+            if (!token) {
+                alert("Please log in to delete employee");
+                return rejectWithValue("Please log in to delete employee");
+            }
+
+            const response = await api.delete(`/remove/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the headers
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            return console.log('error', error);
         }
     }
 );

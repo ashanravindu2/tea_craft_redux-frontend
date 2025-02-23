@@ -17,6 +17,7 @@ import Home from "./pages/Home.tsx";
 import LogPage from "./pages/LogPage.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import SignIn from "./pages/SignIn.tsx";
+import LogoutPopup from "./pages/Logout.tsx";
 
 
 
@@ -50,10 +51,16 @@ function App() {
                 {path: '/production', element: <ProductionPage/>},
                 {path: '/log', element: <LogPage/>},
 
-                {path: '*', element: <Error/>}
+                {path: '*', element: <Error/>},
+                {
+                    path: '/logout',
+                    element: <LogoutPopup/>
+                }
+
 
             ]
         },
+
 
     ]);
 

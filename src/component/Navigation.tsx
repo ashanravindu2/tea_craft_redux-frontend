@@ -62,7 +62,7 @@ function Navigation({ isOpen}) {
                                 activeItem === item.id
                                     ? 'bg-gray-100 text-green-700'
                                     : 'text-gray-700 hover:bg-gray-100 hover:text-green-700'
-                            } ${item.id === 'logout' ? 'fixed bottom-8' : '' } `}
+                            } ${item.id === 'logout' ? 'fixed bottom-8 w-72' : '' } `}
                         >
                             <i
                                 className={`fas ${item.icon} mr-3 text-lg md:text-xl lg:text-2xl py-2 ${
@@ -72,6 +72,9 @@ function Navigation({ isOpen}) {
                             <span>{item.label}</span>
                         </Link>
                     ))}
+
+
+
                 </nav>
             </aside>
         </div>

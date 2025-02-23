@@ -1,6 +1,7 @@
 import {Production} from "../model/Production.ts";
 import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {RootState} from "../store/store.tsx";
 
 const initialState : Production[] = [];
 
@@ -10,52 +11,108 @@ const  api = axios.create({
 
 export const saveProduction = createAsyncThunk(
     'production/saveProduction',
-    async (production:Production)=>{
-        console.log("Slice",production);
+    async (production: Production, { getState, rejectWithValue }) => {
         try {
-            const response = await api.post('/add',production);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to save production");
+                return rejectWithValue("Please log in to save production");
+            }
+
+            const response = await api.post('/add', production, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
 export const updateProduction = createAsyncThunk(
     'production/updateProduction',
-    async (production:Production)=>{
+    async (production: Production, { getState, rejectWithValue }) => {
         try {
-            const response = await api.put(`/update/${production.productionID}`,production);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to update production");
+                return rejectWithValue("Please log in to update production");
+            }
+
+            const response = await api.put(`/update/${production.productionID}`, production, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
 export const deleteProduction = createAsyncThunk(
     'production/removeProduction',
-    async (id:string)=>{
+    async (id: string, { getState, rejectWithValue }) => {
         try {
-            const response = await api.delete(`/remove/${id}`);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to delete production");
+                return rejectWithValue("Please log in to delete production");
+            }
+
+            const response = await api.delete(`/remove/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
 
 export const getAllProductions = createAsyncThunk(
     'production/getAllProductions',
-    async ()=>{
+    async (_, {  rejectWithValue,getState, }) => {
         try {
-            const response = await api.get('/all');
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token
+
+            if (!token) {
+                alert("Please log in to view productions");
+                return rejectWithValue("Please log in to view productions");
+            }
+
+            const response = await api.get('/all', {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include token in the header
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any) {
+            console.log('error', error);
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
+
 
 const productionSlice = createSlice({
     name: 'production',

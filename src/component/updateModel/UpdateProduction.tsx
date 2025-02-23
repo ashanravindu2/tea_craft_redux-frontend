@@ -89,7 +89,7 @@ export function UpdateProduction({ isModalOpen, setIsModalOpen, onUpdate, produc
         const updatedProduction = {
             ...production,
             qualityChecks: formData.qualityChecks,
-            processDate: formData.processDate,
+            processDate: new Date(formData.processDate),
             logs: formData.logs,
             processedQuantity: formData.processedQuantity,
         };

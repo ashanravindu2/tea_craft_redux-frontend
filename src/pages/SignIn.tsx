@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import image from "../assets/img/signin Img.png";
 import logo from "../assets/icons/logoIcon.png"
 import {motion} from "framer-motion";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -36,8 +37,7 @@ const SignUp = () => {
             const user: { password: string; email: string } = { email: formData.email, password: formData.password };
             dispatch(loginUser(user));
         }
-
-
+        toast.success('SignIn')
     };
 
     useEffect(() => {
