@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store.tsx";
-import {loginUser} from "../slice/user-slice.ts";
+import {loginUser} from "../slice/auth-user-slice.ts";
 import { useNavigate } from "react-router";
 import image from "../assets/img/signin Img.png";
 import logo from "../assets/icons/logoIcon.png"
@@ -10,8 +10,7 @@ import {motion} from "framer-motion";
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const
-        isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
+    const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -21,6 +20,7 @@ const SignUp = () => {
     });
 
     const handleChange = (e) => {
+        e.preventDefault();
         const { name, value, type, checked } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -45,7 +45,7 @@ const SignUp = () => {
             console.log("User is authenticated, redirecting to home page...");
             navigate("/home");
         }
-    }, [isAuthenticated, navigate]);
+    }, [isAuthenticated]);
 
     return (
         <motion.div

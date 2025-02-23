@@ -50,8 +50,6 @@ function AddRawMaterial({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddRaw
                 const supplierName = document.getElementById("supplierName") as HTMLInputElement;
                 supplierName.value = supplier.firstName + " " + supplier.lastName;
             }
-
-
         }
     }
 

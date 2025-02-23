@@ -27,12 +27,13 @@ function App() {
 
     const routes = createBrowserRouter([
         {
-            path: '/signUp',
-            element: <SignUp/>, // Set SignUp as the default page
-        },
-        {
             path: '/signIn',
             element:<SignIn/>
+        },
+
+        {
+            path: '/signUp',
+            element: <SignUp/>, // Set SignUp as the default page
         },
 
 

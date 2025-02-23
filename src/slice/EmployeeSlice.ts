@@ -1,8 +1,9 @@
-
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-
 import {Employee} from "../model/Employee.ts";
 import  axios from "axios";
+import {RootState} from "../store/store.tsx";
+import toast from "react-hot-toast";
+import {refreshAuthToken} from "./auth-user-slice.ts";
 
 
 
@@ -15,13 +16,29 @@ const  api = axios.create({
 
 export const saveEmployee = createAsyncThunk(
     'employee/saveEmployee',
-    async (employee:Employee)=>{
-        console.log("Slice",employee);
+    async (employee: Employee, { getState, rejectWithValue }) => { // ✅ Use getState to access Redux state
         try {
-            const response = await api.post('/add',employee);
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token correctly
+
+            console.log("saveEmployee Token", token);
+
+            if (!token) {
+                alert("Please log in to save employee");
+                return rejectWithValue("Please log in to save employee");
+            }
+
+            const response = await api.post('/add', employee, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the headers
+                },
+            });
+
+            alert("Employee saved successfully  "+ response.data);
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+
+        } catch (error: any) {
+          return console.log('error',error)
         }
     }
 );
@@ -52,15 +69,33 @@ export const deleteEmployee = createAsyncThunk(
 
 export const getAllEmployees = createAsyncThunk(
     'employee/getAllEmployees',
-    async ()=>{
+    async (_, { rejectWithValue, getState ,}) => { // ✅ Use getState to access Redux store
         try {
-            const response = await api.get('/all');
+            const state = getState() as RootState; // ✅ Get state
+            const token = state.userReducer.jwt_token; // ✅ Access JWT token correctly
+
+            if (!token) {
+                alert("Please log in to view employees");
+                return rejectWithValue("Please log in to view employees");
+            }
+
+            const response = await api.get('/all', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
             return response.data;
-        }catch (error){
-            return console.log('error',error)
+        } catch (error: any){
+            if (error.response?.status === 401) {
+                alert("Session expired. Please log in again.");
+            }
+
+
         }
     }
 );
+
 
 
 
@@ -111,14 +146,13 @@ const employeeSlice =  createSlice({
             .addCase(getAllEmployees.fulfilled, (state, action) => {
                 action.payload.forEach((employee: Employee) => {
                     state.push(employee);
-                    alert("Employees Fetched Successfully")
                 });
             })
             .addCase(getAllEmployees.rejected, (state, action) => {
-                alert("Error fetching employees");
+                toast.success('Employee saved successfully');
             })
             .addCase(getAllEmployees.pending, (state, action) => {
-                alert("Fetching employees...");
+
             });
     }
 

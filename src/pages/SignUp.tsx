@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store.tsx";
 import { UserAdmin } from "../model/UserAdmin.ts";
-import { registerUser } from "../slice/user-slice.ts";
+import { registerUser } from "../slice/auth-user-slice.ts";
 import { useNavigate } from "react-router";
 import image from "../assets/img/signup Img.png";
 import logo from "../assets/icons/logoIcon.png"

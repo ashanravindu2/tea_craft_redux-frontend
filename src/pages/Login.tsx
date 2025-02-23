@@ -5,7 +5,7 @@ import {AppDispatch} from "../store/store.ts";
 
 import {useNavigate} from "react-router";
 import {UserAdmin} from "../model/UserAdmin.ts";
-import {loginUser, registerUser} from "../slice/user-slice.ts";
+import {loginUser, registerUser} from "../slice/auth-user-slice.ts";
 
 
 export function Login() {

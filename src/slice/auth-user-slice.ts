@@ -20,6 +20,7 @@ export const registerUser= createAsyncThunk(
     'user/register',
     async (user : UserAdmin)=>{
         try{
+
             const response = await api.post('/auth/register', {user},{withCredentials: true});
 
             return response.data;
@@ -37,10 +38,6 @@ export const loginUser= createAsyncThunk(
     async (user : UserAdmin)=>{
         try{
             const response = await api.post('/auth/login', {user},{withCredentials: true});
-
-            //response refresh token and access token set to local storage
-            localStorage.setItem('accessToken', response.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.refreshToken);
             return response.data;
 
 
@@ -49,7 +46,21 @@ export const loginUser= createAsyncThunk(
         }
     }
 )
-const userSlice = createSlice({
+
+
+export const refreshAuthToken = createAsyncThunk(
+    'user/refreshToken',
+    async (refreshToken : any)=>{
+        try{
+            const response = await api.post('/auth/refresh-token', {refreshToken},{withCredentials: true});
+            return response.data;
+        }catch(err){
+            console.log(err);
+        }
+    }
+)
+
+const authUserSlice = createSlice({
     name: 'userReducer',
     initialState,
     reducers:{
@@ -63,13 +74,7 @@ const userSlice = createSlice({
                 console.log('Hello World');
             })
             .addCase(registerUser.fulfilled,(state, action)=>{
-
-                state.loading = false;
-                state.isAuthenticated = true;
-                state.jwt_token = action.payload.accessToken;
-                state.refresh_token = action.payload.refreshToken;
-                state.email = action.payload.email;
-
+                console.log('User Registered Successfully');
 
             })
             .addCase(registerUser.rejected,(state, action)=>{
@@ -88,8 +93,21 @@ const userSlice = createSlice({
             .addCase(loginUser.pending,(state, action)=>{
                 state.isAuthenticated = false;
             })
+        builder
+            .addCase(refreshAuthToken.fulfilled,(state, action)=>{
+                state.jwt_token = action.payload.accessToken;
+                state.refresh_token = action.payload.refreshToken;
+                state.isAuthenticated = true;
+            })
+            .addCase(refreshAuthToken.rejected,(state, action)=>{
+                state.error = action.payload as string;
+                state.isAuthenticated = false;
+            })
+            .addCase(refreshAuthToken.pending,(state, action)=>{
+                state.isAuthenticated = false;
+            })
 
     }
 });
-export const {logOutUser} = userSlice.actions;
-export default userSlice.reducer;
+export const {logOutUser} = authUserSlice.actions;
+export default authUserSlice.reducer;

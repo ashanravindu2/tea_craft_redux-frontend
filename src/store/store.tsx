@@ -4,7 +4,7 @@ import supplierSlice from "../slice/SupplierSlice.ts";
 import rawMaterialSlice from "../slice/RawMaterialSlice.ts";
 import productionSlice from "../slice/ProductionSlice.ts";
 
-import userSlice from "../slice/user-slice.ts";
+import userSlice from "../slice/auth-user-slice.ts";
 import logsSlice from "../slice/LogsSlice.ts";
 
 export const store = configureStore({
