@@ -8,6 +8,10 @@ import {Production} from "../../model/Production.ts";
 import {Employee} from "../../model/Employee.ts";
 import {Supplier} from "../../model/Supplier.ts";
 import {Logs} from "../../model/Logs.ts";
+import {getAllProductions} from "../../slice/ProductionSlice.ts";
+import {getAllEmployees} from "../../slice/EmployeeSlice.ts";
+import {getAllSuppliers} from "../../slice/SupplierSlice.ts";
+import {AppDispatch} from "../../store/store.tsx";
 
 
 interface LogActionProps{
@@ -15,18 +19,28 @@ interface LogActionProps{
     isModalOpen: boolean;
     setModalOpen: (isOpen: boolean) => void;
     onUpdateLog: (log: Logs) => void;
-    onDeleteLog: (logCode: any) => void;
+    onDeleteLog: (log:Logs) => void;
 }
 
 function LogActions({log, isModalOpen, setModalOpen, onUpdateLog, onDeleteLog }: Readonly<LogActionProps>) {
     const productions: Production[] = useSelector((state: any) => state.production || []);
     const employees: Employee[] = useSelector((state: any) => state.employee || []);
     const suppliers: Supplier[] = useSelector((state: any) => state.supplier || []);
+    const dispatch: AppDispatch = useDispatch();
 
-    const dispatch = useDispatch();
-    // const [selectedProduction, setSelectedProduction] = useState<Production[]>([]);
-    // const [selectedEmployee , setSelectedEmployee ] = useState<Employee[]>([]);
-    // const [selectedSupp, setSelectedSupp] = useState<Supplier[]>([]);
+    useEffect(() => {
+        if (!productions || productions.length === 0) {
+            dispatch(getAllProductions());
+        }
+        if (!employees || employees.length === 0) {
+            dispatch(getAllEmployees());
+        }
+        if (!suppliers || suppliers.length === 0) {
+            dispatch(getAllSuppliers());
+        }
+    }, [dispatch]);
+
+
     const [formData, setFormData] = useState({
         supplierID: log.supplierID,
         employeeID: log.employeeID,
@@ -35,8 +49,6 @@ function LogActions({log, isModalOpen, setModalOpen, onUpdateLog, onDeleteLog }:
         observedImage: log.observedImage,
 
     });
-
-
 
 
     useEffect(() => {
@@ -92,12 +104,12 @@ function LogActions({log, isModalOpen, setModalOpen, onUpdateLog, onDeleteLog }:
     }
 
     function handleDeleteLog() {
-        console.log("Deleting log with logCode:", log.logCode);
+        console.log("Deleting log with logCodesssssssssssssssssss:", log.logCode);
         if (!log.logCode) {
             console.error("Error: logCode is undefined");
             return;
         }
-        onDeleteLog(log.logCode);
+        onDeleteLog(log);
         setModalOpen(false);
     }
 

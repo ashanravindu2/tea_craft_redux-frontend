@@ -55,6 +55,7 @@ function LogPage() {
                 visible={t.visible}
                 onDelete={() => {
                     toast.dismiss(t.id);
+                    console.log("LOGSddddddddddddddd", logs.logCode);
                     dispatch(deleteLog(logs.logCode));
                     toast.success(
                         <div className="flex items-center space-x-2 ">

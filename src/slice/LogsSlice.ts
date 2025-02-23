@@ -41,6 +41,8 @@ export const deleteLog   = createAsyncThunk(
     'log/removeLog',
     async (logCode:string)=>{
         try {
+
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",logCode);
             const response = await api.delete(`/remove/${logCode}`);
             return response.data;
         }catch (error){
@@ -93,9 +95,7 @@ const logsSlice = createSlice({
             });
         builder
             .addCase(deleteLog.fulfilled, (state, action) => {
-                const index = state.findIndex((logs: Logs)=>logs.logCode === action.payload.logCode);
-                state.slice(index,1);
-                alert("Logs Deleted Successfully")
+                return state.filter((log) => log.logCode !== action.payload.logCode);
             })
             .addCase(deleteLog.rejected, (state, action) => {
                 alert("Log to fetch Logs");

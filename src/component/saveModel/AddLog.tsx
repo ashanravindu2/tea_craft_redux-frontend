@@ -1,8 +1,8 @@
 
 
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import {Logs} from "../../model/Logs.ts";
 import {Production} from "../../model/Production.ts";
@@ -12,6 +12,9 @@ import {RootState} from "../../store/store.tsx";
 import addRawMaterial from "./AddRawMaterial.tsx";
 import uploadImg from  "../../assets/icons/profile.png"
 import toast from "react-hot-toast";
+import {getAllProductions} from "../../slice/ProductionSlice.ts";
+import {getAllSuppliers} from "../../slice/SupplierSlice.ts";
+import {getAllEmployees} from "../../slice/EmployeeSlice.ts";
 
 interface AddLogProps {
     isModalOpen: boolean;
@@ -20,8 +23,23 @@ interface AddLogProps {
 }
 function AddLog({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddLogProps>) {
     const productions : Production[] = useSelector((state: RootState ) => state.production);
-    const supplierMember : Supplier[] = useSelector((state:  RootState ) => state.supplier);
+    const supplierMember : Supplier[] = useSelector((state:  {supplier:Supplier[]} ) => state.supplier);
     const employeeMember : Employee[] = useSelector((state:  RootState ) => state.employee);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!productions || productions.length === 0) {
+            dispatch(getAllProductions());
+        }
+        if (!supplierMember || supplierMember.length === 0) {
+            dispatch(getAllSuppliers());
+        }
+        if (!employeeMember || employeeMember.length === 0) {
+            dispatch(getAllEmployees());
+        }
+    }, []);
+
+
 
     const [formData, setFormData] = useState({
 
@@ -29,7 +47,6 @@ function AddLog({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddLogProps>) 
         productionID : '',
         supplierID: '',
         employeeID: '',
-        observedImage: '',
         showImage: ''
 
     });
@@ -71,7 +88,7 @@ function AddLog({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddLogProps>) 
                 const file = fileInput?.files?.[0];
 
                 if (!file) {
-                    console.error("No file found");
+                    toast.error("No image selected for upload.");
                     return;
                 }
 

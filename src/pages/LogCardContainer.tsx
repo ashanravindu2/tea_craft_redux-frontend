@@ -1,4 +1,9 @@
 import { Logs } from "../model/Logs.ts";
+import {Production} from "../model/Production.ts";
+import {useSelector} from "react-redux";
+import {RootState} from "../store/store.tsx";
+import {Supplier} from "../model/Supplier.ts";
+import {Employee} from "../model/Employee.ts";
 
 
 
@@ -8,6 +13,10 @@ interface LogCardContainerProps {
 }
 
 function LogCardContainer({ logs,onCardClick }: Readonly<LogCardContainerProps>) {
+
+    const productions : Production[] = useSelector((state: {production:Production[]} ) => state.production);
+    const supplierMember : Supplier[] = useSelector((state: { supplier:Supplier[] } ) => state.supplier);
+    const employeeMember : Employee[] = useSelector((state:  {employee:Employee[]} ) => state.employee);
 
 
     return (
@@ -29,19 +38,40 @@ function LogCardContainer({ logs,onCardClick }: Readonly<LogCardContainerProps>)
                         />
                     )}
                     <div
-                        className={`p-4 px-6 bg-green-200 flex flex-col flex-grow ${!log.observedImage ? "rounded-t-xl" : ""}`}>
-                        <p className="text-sm text-gray-500 mt-2 line-clamp-6">
-              <span className="font-medium text-sm text-gray-700">
-                {log.observation || "No observation provided"}
-              </span>
-                        </p>
+                        className={`p-4 px-6 bg-green-200 flex flex-col flex-grow ${!log.observedImage ? "rounded-t-xl" : ""}`}
+                    >
+                        <div className="max-h-32 overflow-y-auto">
+                            <p className="text-sm text-gray-500 mt-2">
+                                <span className="text-sm text-gray-500">Production: </span>
+                                <span className="font-medium text-sm text-gray-700">
+        {productions.find((production) => production.productionID === log.productionID)?.productionID || "Unknown production"}
+      </span>
+                            </p>
+                            <p className="text-sm text-gray-500 mt-2">
+                                <span className="text-sm text-gray-500">Supplier: </span>
+                                <span className="font-medium text-sm text-gray-700">
+        {supplierMember.find((supplier) => supplier.supplierID === log.supplierID)?.firstName || "Unknown supplier"}
+      </span>
+                            </p>
+                            <p className="text-sm text-gray-500 mt-2">
+                                <span className="text-sm text-gray-500">Employee: </span>
+                                <span className="font-medium text-sm text-gray-700">
+        {employeeMember.find((employee) => employee.employeeID === log.employeeID)?.firstName || "Unknown employee"}
+      </span>
+                            </p>
+                            <p className="text-sm text-gray-500 mt-2">
+                                <span className="text-sm text-gray-500">Observation: </span>
+                                <span className="font-medium text-sm text-gray-700">
+        {log.observation || "No observation provided"}
+      </span>
+                            </p>
+                        </div>
+
                         <p className="text-xs text-black font-bold mt-auto">
                             {log.logDate ? new Date(log.logDate).toLocaleDateString() : "Unknown date"}
                         </p>
-                        <p className="text-xs text-black font-bold mt-auto">
-                            {log.observation}
-                        </p>
                     </div>
+
                 </div>
             ))}
         </div>

@@ -128,7 +128,7 @@ function AddRawMaterial({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddRaw
                                 >
                                     <option value="" disabled>Select Supplier</option>
                                     {supplierMember.map((supplier) => (
-                                        <option value={supplier.supplierID}>{supplier.supplierID}
+                                        <option value={supplier.supplierID}>{supplier.supplierID} / {supplier.firstName} {supplier.lastName}
                                         </option>
                                     ))}
                                 </select>
