@@ -72,7 +72,8 @@ export const getAllEmployees = createAsyncThunk(
     async (_, { rejectWithValue, getState ,}) => { // ✅ Use getState to access Redux store
         try {
             const state = getState() as RootState; // ✅ Get state
-            const token = state.userReducer.jwt_token; // ✅ Access JWT token correctly
+            const token = state.userReducer.jwt_token;
+            // ✅ Access JWT token correctly
 
             if (!token) {
                 alert("Please log in to view employees");

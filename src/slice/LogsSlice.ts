@@ -2,6 +2,7 @@
 import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {Logs} from "../model/Logs.ts";
+import toast from "react-hot-toast";
 
 
 const initialState:Logs[]=[];
@@ -70,10 +71,10 @@ const logsSlice = createSlice({
                 alert("Logs Added Successfully");
             })
             .addCase(saveLog.rejected, (state, action) => {
-                alert("Logs Update Failed");
+                alert("Logs Added Failed");
             })
             .addCase(saveLog.pending, (state, action) => {
-                alert("Logs Update Failed");
+                alert("Logs Added Failed");
             });
         builder
             .addCase(updateLog.fulfilled, (state, action) => {
@@ -85,7 +86,10 @@ const logsSlice = createSlice({
                 alert("Log Update Failed");
             })
             .addCase(updateLog.pending, (state, action) => {
-                alert("LOg Update Failed");
+
+                toast.success('Log Updated Successfully');
+
+
             });
         builder
             .addCase(deleteLog.fulfilled, (state, action) => {

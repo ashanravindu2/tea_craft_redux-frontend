@@ -11,29 +11,24 @@ import DeleteModal from "../component/DeleteModal.tsx";
 import {Logs} from "../model/Logs.ts";
 import {deleteLog, getAllLogs, saveLog, updateLog} from "../slice/LogsSlice.ts";
 import AddLog from "../component/saveModel/AddLog.tsx";
-import {getAllRawMaterials} from "../slice/RawMaterialSlice.ts";
+import {RootState} from "../store/store.tsx";
 
 
 function LogPage() {
-   // const logz : Logs[] = useSelector((state:  {log:Logs[]} ) => state.log);
+
     const dispatch = useDispatch();
-
-    const logz = useSelector(state => state.logs);
-    console.log("Redux State:", logz);
-
-
-    useEffect(() => {
-        if (!logz || logz.length === 0) {
-            dispatch(getAllLogs());
-        }
-
-    }, [dispatch]);
-
-
-
+    const logs : Logs[] = useSelector((state:  RootState ) => state.logs);
     const [selectedField, setIsSelectedField] = useState<Logs | null>(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+
+
+
+    useEffect(() => {
+        if (!logs || logs.length === 0) {
+            dispatch(getAllLogs());
+        }
+    }, [dispatch]);
 
 
     function handleAddLog(newLog :Logs) {
@@ -107,11 +102,11 @@ function LogPage() {
                 </div>
                <div className={'h-[70vh] overflow-y-scroll custom-scrollbar'}>
                    <LogCardContainer
-                       logs={logz}
+                       logs={logs}
                        onCardClick={openLogActionsModal}
                    />
                </div>
-                modal for add log
+
                 <AddLog
                     isModalOpen={isAddModalOpen}
                     setIsModalOpen={setIsAddModalOpen}

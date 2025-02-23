@@ -8,6 +8,10 @@ import {Logs} from "../../model/Logs.ts";
 import {Production} from "../../model/Production.ts";
 import {Employee} from "../../model/Employee.ts";
 import {Supplier} from "../../model/Supplier.ts";
+import {RootState} from "../../store/store.tsx";
+import addRawMaterial from "./AddRawMaterial.tsx";
+import uploadImg from  "../../assets/icons/profile.png"
+import toast from "react-hot-toast";
 
 interface AddLogProps {
     isModalOpen: boolean;
@@ -15,69 +19,103 @@ interface AddLogProps {
     onSave: (newLog: Logs) => void;
 }
 function AddLog({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddLogProps>) {
-    const productions : Production[] = useSelector((state:  {production:Production[]} ) => state.production);
-    const supplierMember : Supplier[] = useSelector((state:  {supplier:Supplier[]} ) => state.supplier);
-    const employeeMember : Employee[] = useSelector((state:  {employee:Employee[]} ) => state.employee);
+    const productions : Production[] = useSelector((state: RootState ) => state.production);
+    const supplierMember : Supplier[] = useSelector((state:  RootState ) => state.supplier);
+    const employeeMember : Employee[] = useSelector((state:  RootState ) => state.employee);
 
     const [formData, setFormData] = useState({
 
+        observation: '',
+        productionID : '',
         supplierID: '',
         employeeID: '',
-        productionID : '',
-        observation: '',
         observedImage: '',
+        showImage: ''
 
     });
 
-    function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement >) {
-        const {name, value } = e.target;
-        setFormData({ ...formData, [name]: value});
+    function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+
     }
+
+
 
     function handleFileUpload(
         e: React.ChangeEvent<HTMLInputElement>,
-        imageKey: "observedImage"
+        imageKey: "showImage"
     ) {
         const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    [imageKey]: reader.result as string,
-                }));
-            };
-            reader.readAsDataURL(file);
+
+        if(file){
+            setFormData({
+                ...formData,
+                [imageKey]: URL.createObjectURL(file),
+
+
+            })
         }
     }
 
-    // function clearFields() {
-    //     setFormData({
-    //
-    //         observation: '',
-    //         observedImage: '',
-    //     });
-    //
-    //     setSelectedEmployee([]);
-    //     setSelectedProduction([]);
-    //     setSelectedSupp([]);
-    //     (document.getElementById('observation') as HTMLTextAreaElement).value = '';
-    // }
+    const [loading , setLoading] = useState(false);
+    const handleSave = async () => {
 
-    function handleSave() {
-        console.log("FORM DATA dddd",formData.observedImage);
-        const newLog: Logs = new Logs(
-            "LO" + Math.floor(Math.random() * 1000),
-            new Date(),
-            formData.observation,
-            formData.productionID,
-            formData.supplierID,
-            formData.employeeID,
-            formData.observedImage
-        );
-        onSave(newLog);
-        // clearFields();
-    }
+
+        if (formData.showImage) {
+            try {
+                setLoading(true);
+
+                // Upload the image and get the URL
+                const fileInput = document.getElementById("file") as HTMLInputElement;
+                const file = fileInput?.files?.[0];
+
+                if (!file) {
+                    console.error("No file found");
+                    return;
+                }
+
+                const data = new FormData();
+                data.append("file", file);
+                data.append("upload_preset", "Log_image_cloudinary");
+                data.append("cloud_name", 'dkefmgxtp');
+
+                const res = await fetch("https://api.cloudinary.com/v1_1/dkefmgxtp/image/upload", {
+                    method: "POST",
+                    body: data,
+                });
+
+                const uploadResponse = await res.json();
+                const uploadedImageUrl = uploadResponse.url;
+
+                if (!uploadedImageUrl) {
+                    toast.error("No image selected for upload.");
+                    return;
+                }
+
+                console.log("Uploaded Image URL:", uploadedImageUrl.url);
+
+                // Create a new log with the uploaded image URL
+                const newLog = new Logs(
+                    "LO" + Math.floor(Math.random() * 1000),
+                    new Date(),
+                    formData.observation,
+                    formData.productionID,
+                    formData.supplierID,
+                    formData.employeeID,
+                    uploadedImageUrl // Set uploaded image URL here
+                );
+
+                onSave(newLog);
+            } catch (error) {
+                console.error("Error saving log:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
+
+
 
 
     return (
@@ -108,10 +146,12 @@ function AddLog({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddLogProps>) 
                 >
                     <h1 className="text-center text-xl font-semibold mb-5">Add Log</h1>
                     <div className="overflow-y-auto h-[56vh] p-4 custom-scrollbar">
+
+
                         <div id="file-upload-container" className="relative mb-12">
                             <label
                                 htmlFor="file"
-                                className={`flex flex-col items-center justify-center ${formData.observedImage ? "hidden" : "block"} bg-gray-300 p-10 rounded-2xl border-2 border-dashed border-gray-500 shadow-xl cursor-pointer hover:bg-gray-200 transition-all`}
+                                className={`flex flex-col items-center justify-center ${formData.showImage ? "hidden" : "block"} bg-gray-300 p-10 rounded-2xl border-2 border-dashed border-gray-500 shadow-xl cursor-pointer hover:bg-gray-200 transition-all`}
                             >
                                 <svg
                                     className="h-12 mb-4 fill-green-600"
@@ -126,24 +166,53 @@ function AddLog({ isModalOpen, setIsModalOpen, onSave }: Readonly<AddLogProps>) 
                                 <p className="text-gray-600">or</p>
                                 <span
                                     className="bg-green-600 text-white px-5 py-2 rounded-lg mt-2 hover:bg-green-700 transition-all">
-                                    Browse file
-                                </span>
+            Browse file
+        </span>
                                 <input
                                     id="file"
                                     type="file"
                                     accept="image/*"
                                     className="hidden"
-                                    onChange={(e) => handleFileUpload(e, "observedImage")}
+                                    onChange={(e) => handleFileUpload(e, "showImage")}
                                 />
                             </label>
-                            {formData.observedImage && (
-                                <img
-                                    src={formData.observedImage}
-                                    alt="Preview"
-                                    className="rounded-lg shadow-xl object-cover z-50 w-full h-64"
-                                />
+
+                            {/* Display selected image */}
+                            {formData.showImage && (
+                                <div className="relative">
+                                    <img
+                                        src={formData.showImage}
+                                        alt="Preview"
+                                        className="rounded-lg shadow-xl object-cover z-50 w-full h-64"
+                                    />
+
+                                    {loading && (
+                                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+                                            <div className="flex flex-col items-center">
+                                                <i className="fa fa-spinner fa-spin text-white text-6xl"></i>
+                                                <p className="text-white text-lg mt-4">Uploading, please wait...</p>
+                                            </div>
+                                        </div>
+                                    )}
+
+
+
+                                    {/* Remove Button */}
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData({...formData, showImage: ''})}
+                                        className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-2 hover:bg-red-700 transition-all"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                  d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                             )}
                         </div>
+
 
                         <div className="sm:col-span-3 py-5">
                             <label htmlFor="supplier-ID" className="block text-sm font-medium text-gray-900">Supplier

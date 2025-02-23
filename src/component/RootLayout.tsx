@@ -10,13 +10,13 @@ import {useSelector} from "react-redux";
 export function RootLayout() {
     const userFullName = "John Doe";
     const userRole = "Role";
-
-    const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
-
-
-    if (!isAuthenticated) {
-        return <Navigate to="/signIn" replace/>;
-    }
+    //
+    // const isAuthenticated = useSelector((state) => state.userReducer.isAuthenticated);
+    //
+    //
+    // if (!isAuthenticated) {
+    //     return <Navigate to="/signIn" replace/>;
+    // }
 
 
     return (
