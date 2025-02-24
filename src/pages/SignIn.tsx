@@ -30,10 +30,12 @@ const SignUp = () => {
     };
 
     const handleSubmit = (e) => {
+        e.preventDefault();
         if(formData.confirmPass != formData.password){
-            alert("PASSWORD ERROR")
+            toast.error('Password does not match');
+            return;
         }else {
-            e.preventDefault();
+
             const user: { password: string; email: string } = { email: formData.email, password: formData.password };
             dispatch(loginUser(user));
         }

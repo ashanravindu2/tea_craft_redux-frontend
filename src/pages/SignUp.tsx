@@ -32,7 +32,7 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!formData.agreed) {
-            alert("Please agree to the terms before signing up.");
+            toast.error("Please agree to the terms and conditions");
             return;
         }
         const user: UserAdmin = { email: formData.email, password: formData.password, role: formData.role };

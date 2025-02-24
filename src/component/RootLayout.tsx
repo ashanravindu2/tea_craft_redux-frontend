@@ -4,7 +4,7 @@ import Navigation from "./Navigation.tsx";
 
 import {Header} from "./Header.tsx";
 import {useSelector} from "react-redux";
-import {RootState} from "../store/store.tsx";
+
 
 
 
