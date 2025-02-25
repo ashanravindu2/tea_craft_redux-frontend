@@ -66,8 +66,8 @@ const SignUp = () => {
                 ease: [0.25, 0.8, 0.5, 1],  // Smooth easing curve
             }}
         >
-            <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-green-700 to-green-300">
-                <div className="bg-white p-8 rounded-xl shadow-lg flex max-w-6xl w-full ">
+            <div className="flex justify-center items-center min-h-screen   ">
+                <div className=" p-8 rounded-xl  flex max-w-6xl w-full ">
 
 
                     {/* Image positioned at the top-right */}
@@ -82,7 +82,7 @@ const SignUp = () => {
                     {/* Left Section - Form */}
                     <div className="w-1/2 p-8">
                         <h2 className="text-3xl font-bold text-gray-800 mb-2">Create your account</h2>
-                        <p className="text-gray-500 mb-6">"Sign up to start managing your factory today!"</p>
+                        <p className="text-[#bc4626] mb-6">"Sign up to start managing your factory today!"</p>
 
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
@@ -139,7 +139,7 @@ const SignUp = () => {
 
                             <button
                                 type="submit"
-                                className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition"
+                                className="w-full  bg-[#347486] text-white p-3 rounded-lg hover:bg-sky-800 transition"
                             >
                                 Sign Up
                             </button>
@@ -152,7 +152,7 @@ const SignUp = () => {
                     </div>
 
                     {/* Right Section - Image */}
-                    <div className="w-1/2 object-cover flex  items-center rounded-r-xl bg-green-300">
+                    <div className="w-1/2 object-cover flex  items-center justify-center ">
                         <img
                             src={image}// Update the path with your actual image location
                             alt="Farm Management"
