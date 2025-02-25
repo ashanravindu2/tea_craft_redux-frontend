@@ -8,7 +8,7 @@ const Home = () => {
 
 
     return (
-        <div className="container mx-auto p-5 bg-gray-50 ">
+        <div className="container mx-auto  mt-16  bg-white flex-1  justify-center ">
             <DashboardHeader/>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6  ">

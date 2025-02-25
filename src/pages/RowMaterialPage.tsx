@@ -137,6 +137,10 @@ export function RowMaterialPage() {
         >
             <div className="container mx-auto p-3">
 
+                <h1 className="text-xl sm:text-2xl font-semibold mb-4 text-center sm:text-left">
+                    Row Material Management
+                </h1>
+
                 <div className="flex space-x-4 mt-3">
                     <div className="relative hidden md:block group mb-4">
                         <input
@@ -150,15 +154,11 @@ export function RowMaterialPage() {
                     </div>
                 </div>
 
-                <h1 className="text-xl sm:text-2xl font-semibold mb-8 text-center sm:text-left">
-                    Row Material Management
-                </h1>
-
                 <div className="flex flex-wrap justify-end sm:justify-end space-x-0 sm:space-x-4 mb-5">
                     <button
                         id="btn-add"
                         onClick={() => setIsModalOpen(true)}
-                        className="bg-green-600 text-white px-8 py-2 rounded-lg font-semibold hover:bg-green-700 transition text-sm sm:text-base flex items-center space-x-2 group sm:w-auto"
+                        className="bg-[#347486]  text-white hover:text-[#347486] px-8 py-2 rounded-lg font-semibold hover:bg-white transition text-sm sm:text-base flex items-center space-x-2 group sm:w-auto"
                     >
                         <i className="fa-solid fa-plus font-bold"></i>
                         <span className="pl-2">Add</span>

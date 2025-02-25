@@ -24,17 +24,17 @@ function StaffWidget() {
     });
 
     return (
-        <div className="bg-white shadow-lg rounded-lg p-5">
+        <div className="bg-[#347486] shadow-lg rounded-lg p-12 mt-20   ">
             <h2 className="text-lg font-semibold mb-4 text-center">Employee Members</h2>
             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-6 gap-6">
                 {roles.map((role) => (
                     <div
                         key={role.name}
-                        className="bg-green-100 text-center py-6 rounded-lg flex flex-col items-center"
+                        className="bg-[#dfa55d] text-center py-6 rounded-lg flex flex-col items-center"
                     >
-                        <img src={role.image} alt={`${role.name} Icon`} className="mb-4" />
-                        <p className="text-5xl font-bold mb-4">{role.count}</p>
-                        <p className="text-sm">{role.name}</p>
+                        <img src={role.image} alt={`${role.name} Icon`} className="mb-4 bg-white p-4 rounded-2xl" />
+                        <p className="text-5xl font-bold mb-4 text-[#ffffff]">{role.count}</p>
+                        <p className="font-medium text-[#ffffff]">{role.name}</p>
                     </div>
                 ))}
             </div>

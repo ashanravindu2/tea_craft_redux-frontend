@@ -32,6 +32,7 @@ function MaterialProcessChart({isModel}:MaterialProcessChartProps) {
             type: isModel,
             style: {
                 fontFamily: "Poppins", // Set global font family
+                backgroundColor: "#347486", // Set global background color
             },
         },
         title: {

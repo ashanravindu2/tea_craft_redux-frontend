@@ -1,5 +1,5 @@
 
-import teacraftlogo from '../assets/icons/logo.png';
+import teacraftlogo from '../assets/icons/logoIcon.png';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useState } from 'react';
 import {Link} from "react-router-dom";
@@ -23,11 +23,11 @@ function Navigation({ isOpen}) {
     ];
 
     return (
-        <div className="relative z-50">
+        <div className="relative z-50 ">
             {/* Burger Button */}
             {!isMenuOpen && (
                 <button
-                    className="md:hidden fixed top-4 left-4 z-30 text-gray-500 hover:text-green-700"
+                    className="md:hidden fixed top-4 left-4 z-30 text-[#dfa55d] "
                     onClick={() => setMenuOpen(!isMenuOpen)}
                 >
                     <i className={`fas ${isMenuOpen ? '' : 'fa-bars-staggered '} text-2xl`}></i>
@@ -35,20 +35,27 @@ function Navigation({ isOpen}) {
             )}
             {/* Sidebar */}
             <aside
-                className={`bg-green-100 shadow-md fixed z-40 h-full transition-transform transform ${
+                className={`bg-[#347486] shadow-md fixed z-40 h-full transition-transform transform ${
                     isMenuOpen || isOpen ? 'translate-x-0' : '-translate-x-full'
                 } md:translate-x-0 w-80`}
             >
-                <div className="p-4 flex justify-between items-center">
-                    <img src={teacraftlogo} alt="logo" className="h-14 object-cover drop-shadow" />
+                <div className="p-4 flex justify-between items-center   rounded-b-2xl   ">
+                    <div className="flex items-center space-x-5">
+                    <img src={teacraftlogo} alt="logo" className="w-14 object-cover drop-shadow" />
+                    <h1 className={"text-2xl text-white font-semibold "}>Ceylon Essence</h1>
+                    </div>
+
+
+
+
                     <button
-                        className="md:hidden text-gray-500 hover:text-green-700"
+                        className="md:hidden  hover:text-green-700"
                         onClick={() => setMenuOpen(false)}
                     >
                         <i className="fas fa-times text-2xl"></i>
                     </button>
                 </div>
-                <nav className="p-4 mt-6 space-y-4">
+                <nav className="p-4 mt-6 space-y-4 ">
                     {menuItems.map((item) => (
                         <Link
                             key={item.id}
@@ -58,15 +65,15 @@ function Navigation({ isOpen}) {
                                 setActiveItem(item.id);
                                 setMenuOpen(false);
                             }}
-                            className={`flex items-center text-base font-medium rounded text-sm md:text-base lg:text-lg w-full py-2 pl-3 transition-all ${
+                            className={`flex items-center  text-base font-medium rounded text-sm md:text-base lg:text-lg w-full py-5 pl-3 transition-all ${
                                 activeItem === item.id
-                                    ? 'bg-gray-100 text-green-700'
-                                    : 'text-gray-700 hover:bg-gray-100 hover:text-green-700'
-                            } ${item.id === 'logout' ? 'fixed bottom-8 w-72' : '' } `}
+                                    ? 'bg-[#dfa55d] text-white'
+                                    : 'text-white hover:bg-white hover:text-[#dfa55d]'
+                            } ${item.id === 'logout' ? 'absolute bottom-8  w-11/12   ' : '' } `}
                         >
                             <i
-                                className={`fas ${item.icon} mr-3 text-lg md:text-xl lg:text-2xl py-2 ${
-                                    activeItem === item.id ? 'text-green-700' : ''
+                                className={`fas ${item.icon} mr-6 text-lg md:text-xl lg:text-2xl py-2   ${
+                                    activeItem === item.id ? 'text-white' : ''
                                 } `}
                             ></i>
                             <span>{item.label}</span>
