@@ -33,10 +33,16 @@ This is a backend application built with **TypeScript + Express + Prisma** 🚀.
 - Node.js (>= 16.x)
 - npm or yarn
 
-### Clone the Repository
+### Clone the Repository Frontend
 ```bash
 git clone https://github.com/ashanravindu2/tea_craft_redux-frontend.git
 ```
+
+### Clone the Repository Backend
+```bash
+git clone https://github.com/ashanravindu2/tea_craft_api.git
+```
+
 
 ### Install Dependencies
 ```bash
