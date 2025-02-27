@@ -143,10 +143,10 @@ const employeeSlice =  createSlice({
                 alert("Employee Added Successfully")
             })
             .addCase(saveEmployee.rejected, (state, action) => {
-                alert("Error Occurred")
+
             })
             .addCase(saveEmployee.pending, (state, action) => {
-                alert("Saving Employee")
+
             });
         builder
             .addCase(updateEmployee.fulfilled, (state, action) => {

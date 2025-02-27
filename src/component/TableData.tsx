@@ -19,7 +19,7 @@ function DataTable({ headers, data,actions= true, renderRow, handleView, handleU
         <div className="overflow-x-auto">
             {/* Table Header */}
             <div
-                className={`grid grid-cols-2 sm:grid-cols-${headers.length} gap-2 bg-[#bc4626] text-center font-semibold text-xs sm:text-sm text-white p-2 rounded-t-xl`}>
+                className={`grid grid-cols-2 sm:grid-cols-${headers.length} gap-2  bg-[#bc4626] text-center font-semibold text-xs sm:text-sm text-white p-2 rounded-t-xl`}>
                 {headers.map((header, index) => (
                     <div
                         key={index}

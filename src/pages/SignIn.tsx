@@ -16,7 +16,6 @@ const SignUp = () => {
     const [formData, setFormData] = useState({
         email: "",
         confirmPass : "",
-        password: "",
 
     });
 
@@ -31,15 +30,10 @@ const SignUp = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(formData.confirmPass != formData.password){
-            toast.error('Password does not match');
-            return;
-        }else {
 
-            const user: { password: string; email: string } = { email: formData.email, password: formData.password };
+            const user: { password: string; email: string } = { email: formData.email, password: formData.confirmPass };
             dispatch(loginUser(user));
-        }
-        toast.success('SignIn')
+            toast.success('SignIn')
     };
 
     useEffect(() => {
@@ -66,6 +60,9 @@ const SignUp = () => {
             }}
         >
             <div className="flex justify-center items-center min-h-screen bg-gradient-to-r ">
+
+                <h2 className="text-9xl absolute text-[#bc4626] mb-1  top-10 font-extrabold opacity-20   ">Ceylon Essence</h2>
+
                 <div className="p-8 rounded-xl flex max-w-6xl ">
 
                     {/* Right Section - Image */}
@@ -73,7 +70,7 @@ const SignUp = () => {
                         <img
                             src={image}// Update the path with your actual image location
                             alt="Farm Management"
-                            className="  object-cover rounded-r-xl "
+                            className="  object-cover rounded-r-xl  "
                         />
                     </div>
 
@@ -104,17 +101,7 @@ const SignUp = () => {
                                 />
                             </div>
 
-                            <div className={""}>
-                                <label className="block text-gray-700 font-semibold mb-1">Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                                    required
-                                />
-                            </div>
+
 
                             <div className={"pb-10"}>
                                 <label className="block text-gray-700 font-semibold mb-1">Confirm Password</label>

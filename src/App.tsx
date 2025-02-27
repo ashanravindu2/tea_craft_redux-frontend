@@ -18,6 +18,7 @@ import LogPage from "./pages/LogPage.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import SignIn from "./pages/SignIn.tsx";
 import LogoutPopup from "./pages/Logout.tsx";
+import {Gridtest} from "./pages/Gridtest.tsx";
 
 
 
@@ -50,6 +51,7 @@ function App() {
                 {path: '/rawMaterial', element: <RowMaterialPage/>},
                 {path: '/production', element: <ProductionPage/>},
                 {path: '/log', element: <LogPage/>},
+
 
                 {path: '*', element: <Error/>},
                 {

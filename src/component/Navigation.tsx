@@ -19,6 +19,7 @@ function Navigation({ isOpen}) {
 
 
 
+
         { id: 'logout', label: 'Logout', icon: 'fa-right-from-bracket', path: '/logout' },
     ];
 
@@ -69,7 +70,7 @@ function Navigation({ isOpen}) {
                                 activeItem === item.id
                                     ? 'bg-[#dfa55d] text-white'
                                     : 'text-white hover:bg-white hover:text-[#dfa55d]'
-                            } ${item.id === 'logout' ? 'absolute bottom-8  w-11/12   ' : '' } `}
+                            } ${item.id === 'logout' ? 'absolute bottom-8 w-72' : '' } `}
                         >
                             <i
                                 className={`fas ${item.icon} mr-6 text-lg md:text-xl lg:text-2xl py-2   ${

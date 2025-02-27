@@ -18,6 +18,7 @@ const SignUp = () => {
         email: "",
         password: "",
         role: "",
+        confirmpassword: "",
         agreed: false,
     });
 
@@ -35,11 +36,18 @@ const SignUp = () => {
             toast.error("Please agree to the terms and conditions");
             return;
         }
-        const user: UserAdmin = { email: formData.email, password: formData.password, role: formData.role };
-        dispatch(registerUser(user));
 
-        toast.success('User Registered Successfully');
-        navigate("/signIn");
+        if (formData.password == formData.confirmpassword) {
+            const user: UserAdmin = { email: formData.email, password: formData.password, role: formData.role };
+            dispatch(registerUser(user));
+
+            toast.success('User Registered Successfully');
+            navigate("/signIn");
+        }
+        else {
+            toast.error("Passwords do not match");
+        }
+
     };
 
     useEffect(() => {
@@ -67,6 +75,9 @@ const SignUp = () => {
             }}
         >
             <div className="flex justify-center items-center min-h-screen   ">
+
+                <h2 className="text-9xl absolute text-[#bc4626] mb-1  top-10 font-extrabold opacity-20   ">Ceylon
+                    Essence</h2>
                 <div className=" p-8 rounded-xl  flex max-w-6xl w-full ">
 
 
@@ -103,6 +114,18 @@ const SignUp = () => {
                                     type="password"
                                     name="password"
                                     value={formData.password}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                                    required
+                                />
+                            </div>
+
+                            <div className={""}>
+                                <label className="block text-gray-700 font-semibold mb-1">Confirm Password</label>
+                                <input
+                                    type="confirmpassword"
+                                    name="confirmpassword"
+                                    value={formData.confirmpassword}
                                     onChange={handleChange}
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                                     required
@@ -167,4 +190,4 @@ const SignUp = () => {
     );
 }
 
-            export default SignUp;
+export default SignUp;
