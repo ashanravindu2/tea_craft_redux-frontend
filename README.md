@@ -57,6 +57,20 @@ npm start
 # or
 yarn start
 ```
+## viewUI
+![Alt text](src/assets/1.png)
+
+![Alt text](src/assets/2.png)
+
+![Alt text](src/assets/3.png)
+
+![Alt text](src/assets/4.png)
+
+![Alt text](src/assets/5.png)
+
+![Alt text](src/assets/6.png)
+
+![Alt text](src/assets/7.png)
 
 ## 🔧 API Integration
 This project interacts with APIs using Redux `Slice` and `store.ts`. Ensure the backend server is running before making API calls.
